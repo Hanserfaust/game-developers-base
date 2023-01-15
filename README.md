@@ -63,9 +63,11 @@ Based on the library https://pypi.org/project/cocos2d/
 
 Source: [example1_imgui.py](coco2d_examples/example1/example1_imgui.py).
 
-This example is based upon this: https://github.com/pyimgui/pyimgui/blob/master/doc/examples/integrations_cocos2d.py
+More on ImGui for Python: https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html
 
-with a fix to the broken ImGUI base class.
+The example is based upon this code: https://github.com/pyimgui/pyimgui/blob/master/doc/examples/integrations_cocos2d.py
+
+with a fix to the broken ImGui base class.
 
 Purpose, to:
 - Show a very basic Coco application skeleton opening a window.
@@ -74,11 +76,18 @@ Purpose, to:
 
 ### Example 2: Coco Sprites
 
-This example is based on this: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
+This example is based on: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
+
+It shows of a host of useful sprite transformation routines useful for game developers.
 
 The same [repository](https://github.com/los-cocos/cocos/blob/master/samples/) contains a number of other useful examples
 that you could check out.
 
 
-### Example 3: Networking with a RedisDB backend
+### Example X: Separating content and engine.
+
+### Example X: Networking with a RedisDB backend
+
+### Example X: The structure of a simple game
+
 ...
