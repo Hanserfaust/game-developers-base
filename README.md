@@ -73,6 +73,7 @@ Purpose, to:
 - Show a very basic Coco application skeleton opening a window.
 - Show how to integrate ImGUI with coco to make settings to the application dynamically.
 
+![](img/example1.png)
 
 ### Example 2: Coco Sprites
 
@@ -83,6 +84,7 @@ It shows of a host of useful sprite transformation routines useful for game deve
 The same [repository](https://github.com/los-cocos/cocos/blob/master/samples/) contains a number of other useful examples
 that you could check out.
 
+![](img/example2.png)
 
 ### Example X: Separating content and engine.
 

@@ -18,10 +18,9 @@ from cocos.director import director
 from cocos.layer import Layer
 from cocos.scene import Scene
 from cocos.sprite import Sprite
+from cocos.path import Bezier as BezierPath
 
-from cocos.path import Bezier
-
-curva = Bezier((100, 100), (449, 290), (5, 287), (438, 27))
+curva = BezierPath((100, 100), (449, 290), (5, 287), (438, 27))
 
 
 def get_sprite_test(index):
