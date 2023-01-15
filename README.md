@@ -38,6 +38,7 @@ Like so:
 
     apt install pyenv
 
+### Common
 Set up a new virtual environment called 'pyg' using pyenv
  
     pyenv install 3.10
