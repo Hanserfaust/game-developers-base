@@ -1,11 +1,16 @@
 # Python Game Developers starting point
 Last tested and working: January 2023.
 
-Zero to hero suit of examples for the aspiring Python Game Developer. I
-[browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
-and decided to go for cocos2d as it seemed to be the best maintained and documented as of 2023.
+Zero to hero suit of examples for the aspiring Python Game Developer. The intention of this
+repository is mostly educational or to provide a skeleton for further development and to provide
+a complete and well-defined starting point, developer setup instructions to get started.
 
-So for now focus will go to showing how to use that. At a later point I may show another one.
+I [browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
+and decided to first go for cocos2d as it seemed to be the best maintained and documented as of 2023.
+
+So for now focus will go to showing how to use that. At a later point I may show similar examples
+for another framework.
+
 
 Coupled with the ImGUI library, it seems to be what I needed for now, and integration with that is
 showed as a first example.
@@ -14,10 +19,7 @@ Honorable mentions are pandas-3D as well as pygame. I quickly evaluated Ogre whi
 a very capable C++ framework for graphics, but lacked in examples and documentation for Python
 especially for the later versions (2023).
 
-## Doc sources
-Based on the library https://pypi.org/project/cocos2d/
-
-### Other useful links
+## Useful links for the game developer
 
 https://gameprogrammingpatterns.com/
 
@@ -38,21 +40,25 @@ Set up a new virtual environment called 'pyg' using pyenv
     pyenv install 3.10
     pyenv virtualenv 3.10 pyg
     pyenv activate pyg
+
+Install requrements needed for the examples
+
     pip install -r requirements.txt
 
 And to run the first example:
 
-    python ./example1_imgui.py
+    python ./coco2d_examples/example1/example1_imgui.py
 
 I use Pycharm for development, but any IDE or editor of choice will do.
 
-## Examples
+## Coco-2D Examples
 
-Subsequent examples involving networking are extensions of that.
+Based on the library https://pypi.org/project/cocos2d/
+
 
 ### Example 1: Coco and ImGUI
 
-Source: [example1_imgui.py](./examples/example1/example1_imgui.py).
+Source: [example1_imgui.py](coco2d_examples/example1/example1_imgui.py).
 
 This example is based upon this: https://github.com/pyimgui/pyimgui/blob/master/doc/examples/integrations_cocos2d.py
 
@@ -67,7 +73,8 @@ Purpose, to:
 
 This example is based on this: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
 
-The same reopository contains a number of other useful examples as well
+The same [repository](https://github.com/los-cocos/cocos/blob/master/samples/) contains a number of other useful examples
+that you could check out.
 
 
 ### Example 3: Networking with a RedisDB backend
