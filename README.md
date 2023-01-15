@@ -52,6 +52,8 @@ Subsequent examples involving networking are extensions of that.
 
 ### Example 1: Coco and ImGUI
 
+[examples/example1/](Source).
+
 This example is based upon this: https://github.com/pyimgui/pyimgui/blob/master/doc/examples/integrations_cocos2d.py
 
 with a fix to the broken ImGUI base class.
