@@ -1,7 +1,11 @@
 # Python Game Developers starting point
 Last tested and working: January 2023.
 
-Zero to hero suit of examples for the aspiring Python Game Developer. The intention of this
+Zero to hero suit of examples for the aspiring Python Game Developer. Seem to work well on
+Python 3.10, all installed and contained in a virtual environment. Server components (when needed) 
+are started using docker-compose.
+
+The intention of this
 repository is mostly educational or to provide a skeleton for further development and to provide
 a complete and well-defined starting point, developer setup instructions to get started.
 
@@ -10,7 +14,6 @@ and decided to first go for cocos2d as it seemed to be the best maintained and d
 
 So for now focus will go to showing how to use that. At a later point I may show similar examples
 for another framework.
-
 
 Coupled with the ImGUI library, it seems to be what I needed for now, and integration with that is
 showed as a first example.
