@@ -45,24 +45,24 @@ Set up a new virtual environment called 'pyg' using pyenv
     pyenv virtualenv 3.10 pyg
     pyenv activate pyg
 
-Install requrements needed for the examples
+Install requirements needed for the examples
 
     pip install -r requirements.txt
 
 And to run the first example:
 
-    python ./coco2d_examples/example1/example1_imgui.py
+    python ./cocos2d_examples/example1/example1_imgui.py
 
 I use Pycharm for development, but any IDE or editor of choice will do.
 
-## Coco-2D Examples
+## Cocos-2D Examples
 
 Based on the library https://pypi.org/project/cocos2d/
 
 
 ### Example 1: Coco and ImGUI
 
-Source: [example1_imgui.py](coco2d_examples/example1/example1_imgui.py).
+Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
 
 More on ImGui for Python: https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html
 
@@ -72,7 +72,7 @@ with a fix to the broken ImGui base class.
 
 Purpose, to:
 - Show a very basic Coco application skeleton opening a window.
-- Show how to integrate ImGUI with coco to make settings to the application dynamically.
+- Show how to integrate ImGUI with cocos to make settings to the application dynamically.
 
 ![](img/example1.png)
 
