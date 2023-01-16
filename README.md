@@ -5,12 +5,15 @@ Zero to hero suit of examples for the aspiring Python Game Developer. Seem to wo
 Python 3.10, all installed and contained in a virtual environment. Server components (when needed) 
 are started using docker-compose.
 
-The intention of this
-repository is mostly educational or to provide a skeleton for further development and to provide
-a complete and well-defined starting point, developer setup instructions to get started.
+The intention of this repository is mostly educational and to provide a skeleton for further 
+development. It provides a well-defined starting point with developer setup instructions to get things going.
 
 I [browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
 and decided to first go for cocos2d as it seemed to be the best maintained and documented as of 2023.
+
+Cocos-2D builds on Pyglet and latest release (v0.6.9) was made in November 2020.
+
+Main home page for Cocos-2D: http://los-cocos.github.io/cocos-site/, also see the [PyPi site](https://pypi.org/project/cocos2d/).
 
 So for now focus will go to showing how to use that. At a later point I may show similar examples
 for another framework.
@@ -56,9 +59,6 @@ And to run the first example:
 I use Pycharm for development, but any IDE or editor of choice will do.
 
 ## Cocos-2D Examples
-
-Based on the library https://pypi.org/project/cocos2d/
-
 
 ### Example 1: Coco and ImGUI
 
