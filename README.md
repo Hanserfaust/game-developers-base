@@ -9,21 +9,26 @@ The intention of this repository is mostly educational and to provide a skeleton
 development. It provides a well-defined starting point with developer setup instructions to get things going.
 
 I [browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
-and decided to first go for cocos2d as it seemed to be the best maintained and documented as of 2023.
+and decided to first go for **cocos2d** as it seemed to be the best maintained and documented as of 2023.
 
-Cocos-2D builds on Pyglet and latest release (v0.6.9) was made in November 2020.
+Cocos-2D builds on **Pyglet** and the latest release (v0.6.9) was made in November 2020.
 
 Main home page for Cocos-2D: http://los-cocos.github.io/cocos-site/, also see the [PyPi site](https://pypi.org/project/cocos2d/).
 
-So for now focus will go to showing how to use that. At a later point I may show similar examples
-for another framework.
-
-Coupled with the ImGUI library, it seems to be what I needed for now, and integration with that is
+Coupled with the **ImGUI** library, it seems to be what I needed for now, and integration with that is
 showed as a first example.
 
-Honorable mentions are pandas-3D as well as pygame. I quickly evaluated Ogre which seemes like
-a very capable C++ framework for graphics, but lacked in examples and documentation for Python
-especially for the later versions (2023).
+So for now focus will go to showing how to use that. At a later point I may show similar examples
+for another framework. Runner ups, in order would be:
+
+- Python Arcade: https://api.arcade.academy/en/latest/ looks well maintained.
+- Ren'py for storytelling kind of games: https://www.renpy.org/
+- Pandas3D.
+- Possibly Pygame.
+
+I quickly evaluated **Ogre** which seemes like a very capable C++ framework for graphics, but lacked 
+in examples and documentation for Python especially for the later versions (2023). Pygame seemed
+all-over a bit dated and not very actively maintained.
 
 ## Useful links for the game developer
 
@@ -59,6 +64,8 @@ And to run the first example:
 I use Pycharm for development, but any IDE or editor of choice will do.
 
 ## Cocos-2D Examples
+
+Cocos-2D, API-Ref: http://los-cocos.github.io/cocos-site/doc/index.html
 
 ### Example 1: Coco and ImGUI
 
