@@ -67,6 +67,16 @@ I use Pycharm for development, but any IDE or editor of choice will do.
 
 Cocos-2D, API-Ref: http://los-cocos.github.io/cocos-site/doc/index.html
 
+### Example 0: Hello World
+
+Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
+
+This one is simply the hello-world example found in the quickstart:
+
+http://los-cocos.github.io/cocos-site/doc/programming_guide/quickstart.html
+
+![](img/example0.png)
+
 ### Example 1: Coco and ImGUI
 
 Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
