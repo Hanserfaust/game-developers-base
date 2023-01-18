@@ -1,7 +1,5 @@
 import msgpack
 
-from client import Client
-
 
 class ClientEvent(object):
     """
@@ -9,30 +7,33 @@ class ClientEvent(object):
         Data is any dict. The contents are considered event specific.
     """
 
-    # Must be set if sending to server
-    client_id = Client.id
-
     # Below must be defined by subclasses
     name = None
     data_keys = []
 
-    def __init__(self, data):
-        # Data is a list representing the keys in data_keys
-        assert(len(data), len(self.data_keys))
+    # Set on server side upon deserialization
+    client_id = None
+
+    def __init__(self, *data):
+        # Data is a tuple representing the keys in data_keys
+        assert len(data) == len(self.data_keys)
         self.data = data
 
     def __str__(self):
-        return "%s: %s" % (self.name, self.data)
+        if self.client_id:
+            return "Client %s: %s data=(%s)" % (self.client_id, self.name, self.data)
+        else:
+            return "%s: %s" % (self.name, self.data)
 
     def as_dict(self):
         return dict(zip(self.data_keys, self.data))
 
-    def build_packet(self):
-        return [self.name, self.client_id] + self.data
+    def build_packet(self, client_id):
+        return self.name, client_id, self.data
 
-    def serialize(self):
-        # First build a packet
-        packet = self.build_packet()
+    def serialize(self, client_id):
+        # Builds a packet to send over the socket
+        packet = self.build_packet(client_id)
         return msgpack.packb(packet, use_bin_type=True)
 
     @staticmethod
@@ -44,13 +45,18 @@ class ClientEvent(object):
         :return:
         """
         packet = msgpack.unpackb(bin_packet, raw=False)
-        name, client_id, data = packet[0], packet[1], packet[2:]
+        name, client_id, data = packet[0], packet[1], packet[2]
 
         # Instantiate new event object
-        e = events_registry[name](data)
+        e = events_registry[name](*tuple(data))
         e.client_id = client_id
 
         return e
+
+
+class HelloServerEvent(ClientEvent):
+    name = 'HELLO_SERVER'
+    data_keys = ['message']
 
 
 class MouseMoveClientEvent(ClientEvent):
@@ -61,5 +67,6 @@ class MouseMoveClientEvent(ClientEvent):
 
 
 events_registry = {
+    HelloServerEvent.name: HelloServerEvent,
     MouseMoveClientEvent.name: MouseMoveClientEvent
 }

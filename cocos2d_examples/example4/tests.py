@@ -10,10 +10,10 @@ class TestEvents(unittest.TestCase):
         #
         # Given
         #
-        data = [10, 20]
-        orig_event = MouseMoveClientEvent(data)
+        orig_event = MouseMoveClientEvent(10, 20)
         print("Original event: " + str(orig_event))
-        bin_packet = orig_event.serialize()
+        client_id = 1234
+        bin_packet = orig_event.serialize(client_id)
         # print(bin_packet)
 
         #
@@ -28,5 +28,5 @@ class TestEvents(unittest.TestCase):
         # > deserialized event should match the original event
         self.assertEqual(orig_event.name, mouse_event.name)
         self.assertEqual(orig_event.data, mouse_event.data)
-        self.assertEqual(orig_event.client_id, mouse_event.client_id)
+        self.assertEqual(client_id, mouse_event.client_id)
         print("Deserialized event: " + str(mouse_event))

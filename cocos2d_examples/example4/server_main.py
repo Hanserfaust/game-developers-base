@@ -1,52 +1,46 @@
-import socket
-from _thread import *
-import sys
+import socketserver
+
+from events import ClientEvent
 
 
-def threaded_client(conn):
-    conn.send(str.encode("Connected"))
-    reply = ""
-    while True:
-        try:
-            data = conn.recv(2048)
-            reply = data.decode("utf-8")
+class GameEventHandler(socketserver.BaseRequestHandler):
+    """
+    The request handler class for our server.
 
-            if not data:
-                print("Disconnected")
-                break
-            else:
-                print("Received: ", reply)
-                print("Sending : ", reply)
+    It is instantiated once per connection to the server, and must
+    override the handle() method to implement communication to the
+    client.
+    """
 
-            conn.sendall(str.encode(reply))
-        except:
-            break
+    def handle(self):
+        """
 
-    print("Lost connection")
-    conn.close()
+            Handler for a client
+
+        :return:
+        """
+        print("Client Connected!")
+
+        while True:
+            # self.request is the TCP socket connected to the client
+            # recv(LARGER THAN SINGLE PACKET), so 1024 works.
+            data = self.request.recv(1024)
+
+            if data:
+                client_event = ClientEvent.factory(bin_packet=data)
+                print("EVENT (len=%s): %s" % (len(data), client_event))
 
 
 def main():
-    server = "127.0.0.1"
-    port = 7777
+    host, port = "localhost", 7777
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        s.bind((server, port))
-    except socket.error as e:
-        str(e)
-
-    s.listen(2)
     print("Server Started, listening for connections on port %s" % port)
 
-    while True:
-        # Blocks on accept()
-        conn, addr = s.accept()
-        print("Connected to:", addr)
-
-        # One thread per client
-        start_new_thread(threaded_client, (conn,))
+    # Create the server, binding to localhost on port 9999
+    with socketserver.TCPServer((host, port), GameEventHandler) as server:
+        # Activate the server; this will keep running until you
+        # interrupt the program with Ctrl-C
+        server.serve_forever()
 
 
 if __name__ == "__main__":

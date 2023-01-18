@@ -1,6 +1,9 @@
 import cocos
+import time
 
-from cocos2d_examples.example3.server import Server
+from client import GameClient
+
+from events import MouseMoveClientEvent, HelloServerEvent
 
 
 # Subclass a Layer and define the logic of you program here:
@@ -15,8 +18,6 @@ class MouseDisplay(cocos.layer.Layer):
         self.text = cocos.text.Label('No mouse events yet', font_size=18, x=self.posx, y=self.posy)
         self.add(self.text)
 
-        self.server = Server.get()
-
     def update_text(self, x, y):
         text = 'Mouse @ %d,%d' % (x, y)
         self.text.element.text = text
@@ -30,10 +31,11 @@ class MouseDisplay(cocos.layer.Layer):
         (dx, dy) is the distance vector covered by the mouse pointer since the
           last call.
         """
-
-        self.server.send_event()
-
         self.update_text(x, y)
+
+        e = MouseMoveClientEvent(x, y)
+
+        GameClient.get_instance().send_client_event(e)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         """Called when the mouse moves over the app window with some button(s) pressed
@@ -62,7 +64,10 @@ class MouseDisplay(cocos.layer.Layer):
 def main():
 
     # Lets connect to server first to see that stuff works
+    gc = GameClient.get_instance(debug=True)
+    gc.connect()
 
+    gc.send_client_event(HelloServerEvent("Hello"))
 
     # Init director
     cocos.director.director.init()
