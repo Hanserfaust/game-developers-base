@@ -67,7 +67,7 @@ I use Pycharm for development, but any IDE or editor of choice will do.
 
 Cocos-2D, API-Ref: http://los-cocos.github.io/cocos-site/doc/index.html
 
-### Example 0: Hello World
+### Example 0: Hello World!
 
 Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
 
@@ -104,9 +104,30 @@ that you could check out.
 
 ![](img/example2.png)
 
+
+### Example 3: Mouse events
+
+This example is based on this one: http://los-cocos.github.io/cocos-site/doc/programming_guide/quickstart.html#handling-events
+
+It shows how to work with mouse move and click events.
+
+![](img/example3.png)
+
+
+### Example 4: Server events
+
+This is Example 3 with the addition of sending the mouse-coordinates to a server that echoes
+the coordinates back and displays a dot/trace on another layer.
+
+This example also showcases how to use Msgpack (https://msgpack.org/)
+
+Additions are loosely based on: 
+- https://www.techwithtim.net/tutorials/python-online-game-tutorial/server/
+- https://www.techwithtim.net/tutorials/python-online-game-tutorial/sending-receiving-information/
+
+
 ### Example X: Separating content and engine.
 
-### Example X: Networking with a RedisDB backend
 
 ### Example X: The structure of a simple game
 
