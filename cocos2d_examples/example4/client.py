@@ -1,9 +1,8 @@
 import random
-import threading
 import socket
 
 
-class GameClient(threading.Thread):
+class MessageTCPClient(object):
     """
         Singleton representing/abstracting interactions with the server.
 
@@ -26,9 +25,9 @@ class GameClient(threading.Thread):
 
     @staticmethod
     def get_instance(**kwargs):
-        if not GameClient._instance:
-            GameClient._instance = GameClient(**kwargs)
-        return GameClient._instance
+        if not MessageTCPClient._instance:
+            MessageTCPClient._instance = MessageTCPClient(**kwargs)
+        return MessageTCPClient._instance
 
     def connect(self):
         self.sock.connect(self.addr)
@@ -43,10 +42,10 @@ class GameClient(threading.Thread):
             print(e)
 
     @staticmethod
-    def send_message(game_message):
+    def send(game_message):
         # Quick access method for sending data to server
-        gc = GameClient.get_instance()
+        gc = MessageTCPClient.get_instance()
         if gc.debug:
             print("Sending %s" % game_message)
-        bin_packet = game_message.serialize(GameClient.id)
+        bin_packet = game_message.serialize(MessageTCPClient.id)
         gc._send(bin_packet)

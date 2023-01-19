@@ -113,18 +113,29 @@ It shows how to work with mouse move and click events.
 
 ![](img/example3.png)
 
-
-### Example 4: Server events
+### Example 4: Networking; Sending messages to a TCP server
 
 This is Example 3 with the addition of sending the mouse-coordinates to a server that echoes
 the coordinates back and displays a dot/trace on another layer.
 
-This example also showcases how to use Msgpack (https://msgpack.org/)
+This example also showcases how to use Msgpack (https://msgpack.org/) and a simple TCP socket
+client and server.
 
 Additions are loosely based on: 
 - https://www.techwithtim.net/tutorials/python-online-game-tutorial/server/
 - https://www.techwithtim.net/tutorials/python-online-game-tutorial/sending-receiving-information/
 
+Will build on this example over next couple of examples.
+
+As seen in screenshot, moving the mouse over the window will transfer the coordinates
+to the server. It also echoes them back to the client, but no client reception code
+is yet implemented, that is coming up in the next example.
+
+![](img/example4.png)
+
+### Example 5: Networking: Updating the game client from server
+Here we build on the last example, adding a threaded receiver, putting messages
+on a Queue for processing/dispatching to the game client.
 
 ### Example X: Separating content and engine.
 
