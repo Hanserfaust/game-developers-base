@@ -41,8 +41,11 @@ class GameClient(object):
         except socket.error as e:
             print(e)
 
-    def send_client_event(self, client_event):
-        if self.debug:
-            print("Sending %s" % client_event)
-        bin_packet = client_event.serialize(self.id)
-        self._send(bin_packet)
+    @staticmethod
+    def send_message(game_message):
+        # Quick access method for sending data to server
+        gc = GameClient.get_instance()
+        if gc.debug:
+            print("Sending %s" % game_message)
+        bin_packet = game_message.serialize(GameClient.id)
+        gc._send(bin_packet)

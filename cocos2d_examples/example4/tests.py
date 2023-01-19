@@ -1,32 +1,36 @@
 import unittest
 
-from events import ClientEvent, MouseMoveClientEvent
+from messages import GameMessage, MouseMoveGameMessage
 
 
-class TestEvents(unittest.TestCase):
+class TestGameMessages(unittest.TestCase):
 
-    def test_event_serialization(self):
+    def test_message_serialization(self):
 
         #
         # Given
         #
-        orig_event = MouseMoveClientEvent(10, 20)
-        print("Original event: " + str(orig_event))
+        orig_message = MouseMoveGameMessage(10, 20)
+        print("Original message: " + str(orig_message))
         client_id = 1234
-        bin_packet = orig_event.serialize(client_id)
+        bin_packet = orig_message.serialize(client_id)
         # print(bin_packet)
 
         #
         # When
         #
         # > using the abstract ClientEvent, will create a MouseMoveClientEvent
-        mouse_event = ClientEvent.factory(bin_packet)
+        mouse_message = GameMessage.factory(bin_packet)
 
         #
         # Then
         #
-        # > deserialized event should match the original event
-        self.assertEqual(orig_event.name, mouse_event.name)
-        self.assertEqual(orig_event.data, mouse_event.data)
-        self.assertEqual(client_id, mouse_event.client_id)
-        print("Deserialized event: " + str(mouse_event))
+        # > deserialized message should match the original message
+        self.assertEqual(orig_message.name, mouse_message.name)
+        self.assertEqual(orig_message.data, mouse_message.data)
+        self.assertEqual(client_id, mouse_message.client_id)
+        self.assertEqual(orig_message.as_dict(), mouse_message.as_dict())
+
+        print("Deserialized message: " + str(mouse_message))
+        print(orig_message.as_dict())
+

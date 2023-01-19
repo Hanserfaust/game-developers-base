@@ -1,10 +1,11 @@
 import msgpack
 
 
-class ClientEvent(object):
+class GameMessage(object):
     """
-        Abstract base-class representing events on a game client.
-        Data is any dict. The contents are considered event specific.
+        Abstract base-class representing messages sent between client and server.
+
+        The data carried is message specific and are given as a tuple to the constructor.
     """
 
     # Below must be defined by subclasses
@@ -21,7 +22,7 @@ class ClientEvent(object):
 
     def __str__(self):
         if self.client_id:
-            return "Client %s: %s data=(%s)" % (self.client_id, self.name, self.data)
+            return "Client %s: %s data=%s" % (self.client_id, self.name, self.data)
         else:
             return "%s: %s" % (self.name, self.data)
 
@@ -47,26 +48,24 @@ class ClientEvent(object):
         packet = msgpack.unpackb(bin_packet, raw=False)
         name, client_id, data = packet[0], packet[1], packet[2]
 
-        # Instantiate new event object
-        e = events_registry[name](*tuple(data))
+        # Instantiate new message object
+        e = message_registry[name](*tuple(data))
         e.client_id = client_id
 
         return e
 
 
-class HelloServerEvent(ClientEvent):
+class HelloServerGameMessage(GameMessage):
     name = 'HELLO_SERVER'
     data_keys = ['message']
 
 
-class MouseMoveClientEvent(ClientEvent):
-    # Data: x, y
-    # Notes: Clicks are not MouseMove events.
+class MouseMoveGameMessage(GameMessage):
     name = 'MOUSE_MOVE'
     data_keys = ['x', 'y']
 
 
-events_registry = {
-    HelloServerEvent.name: HelloServerEvent,
-    MouseMoveClientEvent.name: MouseMoveClientEvent
+message_registry = {
+    HelloServerGameMessage.name: HelloServerGameMessage,
+    MouseMoveGameMessage.name: MouseMoveGameMessage
 }

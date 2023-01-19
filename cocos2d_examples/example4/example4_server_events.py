@@ -3,7 +3,7 @@ import time
 
 from client import GameClient
 
-from events import MouseMoveClientEvent, HelloServerEvent
+from messages import MouseMoveGameMessage, HelloServerGameMessage
 
 
 # Subclass a Layer and define the logic of you program here:
@@ -33,9 +33,7 @@ class MouseDisplay(cocos.layer.Layer):
         """
         self.update_text(x, y)
 
-        e = MouseMoveClientEvent(x, y)
-
-        GameClient.get_instance().send_client_event(e)
+        GameClient.send_message(MouseMoveGameMessage(x, y))
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         """Called when the mouse moves over the app window with some button(s) pressed
@@ -67,7 +65,7 @@ def main():
     gc = GameClient.get_instance(debug=True)
     gc.connect()
 
-    gc.send_client_event(HelloServerEvent("Hello"))
+    gc.send_message(HelloServerGameMessage("Hello"))
 
     # Init director
     cocos.director.director.init()

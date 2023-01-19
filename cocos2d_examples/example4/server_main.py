@@ -1,9 +1,9 @@
 import socketserver
 
-from events import ClientEvent
+from messages import GameMessage
 
 
-class GameEventHandler(socketserver.BaseRequestHandler):
+class GameMessageHandler(socketserver.BaseRequestHandler):
     """
     The request handler class for our server.
 
@@ -21,14 +21,29 @@ class GameEventHandler(socketserver.BaseRequestHandler):
         """
         print("Client Connected!")
 
+        messages = 0
+        #
+        # TODO: While "connected" etc.
+        #
         while True:
-            # self.request is the TCP socket connected to the client
+            # self.request is the last TCP socket connected to the client
             # recv(LARGER THAN SINGLE PACKET), so 1024 works.
+            #
+            #
             data = self.request.recv(1024)
 
             if data:
-                client_event = ClientEvent.factory(bin_packet=data)
-                print("EVENT (len=%s): %s" % (len(data), client_event))
+                messages += 1
+                game_message = GameMessage.factory(bin_packet=data)
+                print("EVENT %s (len=%s): %s" % (messages, len(data), game_message))
+                
+                #
+                # Ok, got message from client, could check that game ID is correct
+                # for this socket etc.
+                #
+                # This is a good place to just announce that we got data (Observer pattern)
+                # and just move one
+                # 
 
 
 def main():
@@ -37,7 +52,7 @@ def main():
     print("Server Started, listening for connections on port %s" % port)
 
     # Create the server, binding to localhost on port 9999
-    with socketserver.TCPServer((host, port), GameEventHandler) as server:
+    with socketserver.TCPServer((host, port), GameMessageHandler) as server:
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         server.serve_forever()
