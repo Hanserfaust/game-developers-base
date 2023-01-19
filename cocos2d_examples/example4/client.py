@@ -1,8 +1,9 @@
 import random
+import threading
 import socket
 
 
-class GameClient(object):
+class GameClient(threading.Thread):
     """
         Singleton representing/abstracting interactions with the server.
 

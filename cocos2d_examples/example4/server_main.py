@@ -1,6 +1,6 @@
 import socketserver
 
-from messages import GameMessage
+from messages import GameMessage, HelloServerGameMessage, MouseMoveGameMessage
 
 
 class GameMessageHandler(socketserver.BaseRequestHandler):
@@ -30,20 +30,42 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
             # recv(LARGER THAN SINGLE PACKET), so 1024 works.
             #
             #
-            data = self.request.recv(1024)
+            try:
+                data = self.request.recv(1024)
 
-            if data:
-                messages += 1
-                game_message = GameMessage.factory(bin_packet=data)
-                print("EVENT %s (len=%s): %s" % (messages, len(data), game_message))
-                
-                #
-                # Ok, got message from client, could check that game ID is correct
-                # for this socket etc.
-                #
-                # This is a good place to just announce that we got data (Observer pattern)
-                # and just move one
-                # 
+                if data:
+                    messages += 1
+                    gm = GameMessage.factory(bin_packet=data)
+                    print("EVENT %s (len=%s): %s" % (messages, len(data), gm))
+
+                    match gm.name:
+
+                        case HelloServerGameMessage.name:
+                            pass
+
+                        case MouseMoveGameMessage.name:
+                            #
+                            # For this example, just echo back the coordinates a GameMessage
+                            #
+                            dd = gm.as_dict()
+                            server_gm = MouseMoveGameMessage(dd['x'], dd['y'])
+                            ser = server_gm.serialize('SERVER')
+                            self.request.sendall(ser)
+                            print("Sending from server: %s" % server_gm)
+
+                    #
+                    # Further work:
+                    #
+                    # Ok, got message from client, could check that game ID is correct
+                    # for this socket etc.
+                    #
+                    # This is a good place to just announce that we got data (Observer pattern)
+                    # and just move one and let the Observer decide how this event affected
+                    # the server state.
+                    #
+
+            except ConnectionResetError as e:
+                print("ConnectionResetError: %s" % e)
 
 
 def main():

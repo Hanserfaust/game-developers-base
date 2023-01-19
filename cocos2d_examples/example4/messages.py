@@ -29,6 +29,9 @@ class GameMessage(object):
     def as_dict(self):
         return dict(zip(self.data_keys, self.data))
 
+    def d(self):
+        return self.as_dict()
+
     def build_packet(self, client_id):
         return self.name, client_id, self.data
 
