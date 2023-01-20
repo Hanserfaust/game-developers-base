@@ -116,7 +116,7 @@ It shows how to work with mouse move and click events.
 ### Example 4: Networking; Sending messages to a TCP server
 
 This is Example 3 with the addition of sending the mouse-coordinates to a server that echoes
-the coordinates back and displays a dot/trace on another layer.
+the coordinates to its console.
 
 This example also showcases how to use Msgpack (https://msgpack.org/) and a simple TCP socket
 client and server.
@@ -136,6 +136,9 @@ is yet implemented, that is coming up in the next example.
 ### Example 5: Networking: Updating the game client from server
 Here we build on the last example, adding a threaded receiver, putting messages
 on a Queue for processing/dispatching to the game client.
+
+Ideas from:
+- https://dzone.com/articles/understanding
 
 ### Example X: Separating content and engine.
 

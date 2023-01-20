@@ -46,6 +46,7 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
                         case MouseMoveGameMessage.name:
                             #
                             # For this example, just echo back the coordinates a GameMessage
+                            #   this is essentially the starting point of the next example.
                             #
                             dd = gm.as_dict()
                             server_gm = MouseMoveGameMessage(dd['x'], dd['y'])
