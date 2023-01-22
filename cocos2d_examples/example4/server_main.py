@@ -14,8 +14,12 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         """
+            Handler for a client.
 
-            Handler for a client
+            NOTE: This server is NOT threaded, so the while-loop below will block the thread
+            forver. The server will NOT be able to server multiple clients.
+
+            This will be improved on in the next example.
 
         :return:
         """
@@ -26,9 +30,9 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
         # TODO: While "connected" etc.
         #
         while True:
+            #
             # self.request is the last TCP socket connected to the client
             # recv(LARGER THAN SINGLE PACKET), so 1024 works.
-            #
             #
             try:
                 data = self.request.recv(1024)
@@ -44,15 +48,7 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
                             pass
 
                         case MouseMoveGameMessage.name:
-                            #
-                            # For this example, just echo back the coordinates a GameMessage
-                            #   this is essentially the starting point of the next example.
-                            #
-                            dd = gm.as_dict()
-                            server_gm = MouseMoveGameMessage(dd['x'], dd['y'])
-                            ser = server_gm.serialize('SERVER')
-                            self.request.sendall(ser)
-                            print("Sending from server: %s" % server_gm)
+                            pass
 
                     #
                     # Further work:
@@ -63,6 +59,8 @@ class GameMessageHandler(socketserver.BaseRequestHandler):
                     # This is a good place to just announce that we got data (Observer pattern)
                     # and just move one and let the Observer decide how this event affected
                     # the server state.
+                    #
+                    # This is thing we will focus on in later examples.
                     #
 
             except ConnectionResetError as e:
