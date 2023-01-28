@@ -20,8 +20,12 @@ ECS architectural pattern: https://en.wikipedia.org/wiki/Entity_component_system
 Since my main programming language at the time of writing this was Python I decided to see what
 it had to offer even though Pyton is not the language of choice for most professionals. 
 
-The set of examples and documentation could still very well be used do develop simpler (or even
-complex) games for educational purposes.
+The Cocos2D framework was both fun and easy to work with. So I set a few examples up using that.
+
+The set of examples and documentation could still be used to develop simpler (or even
+complex) games for educational purposes or hobby projects etc. Fun and simple, but capable enough
+for anyone wanting to dive into game development. Especially for experimenting with client-side
+patterns, program structure, testing etc.
 
 The Python-based examples can be found [here](./python-cocos2d/README.md).
 
@@ -30,12 +34,21 @@ Typical use-cases, but not limited to:
 - Fun Python development, events, graphics, 2D etc.
 - Educational for game (client) development.
 - Cocos 2D development in general.
+- Python game-server development.
 
+Development was halted mostly for not wanting to implement a scalable threaded server backend from scratch
+built on pure sockets. So for server-side development I continued looking to Go-lang based servers,
+either building one from scratch or preferably looking at any of the available open-source
+frameworks.
 
 ## 2. Python client, Go server
 This a smaller set of examples, building on the basic Python examples above but working
 against a simple but custom made [Go](https://go.dev/) server-side. This part contains only one
 or a few examples for experimental purposes. I may expand this once my Go skills improves.
+
+Go is an excellent choice for a heavily concurrent problem that a game server presents. Another
+good choice would probably be node.js. Go, however seem to deal with concurrency in a very elgant
+way using its *goroutines* which I wanted to explore.
 
 The Python-Go examples
 
