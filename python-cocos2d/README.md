@@ -65,7 +65,11 @@ Cocos-2D, API-Ref: http://los-cocos.github.io/cocos-site/doc/index.html
 
 ### Example 0: Hello World!
 
-Source: [example1_imgui.py](python-cocos2d/example1/example1_imgui.py).
+Purpose:
+- Test your environment.
+- See how the most basic program is built.
+
+Source: [example0.py](./example0/example0_hello_world.py).
 
 This one is simply the hello-world example found in the quickstart:
 
@@ -75,7 +79,11 @@ http://los-cocos.github.io/cocos-site/doc/programming_guide/quickstart.html
 
 ### Example 1: Coco and ImGUI
 
-Source: [example1_imgui.py](python-cocos2d/example1/example1_imgui.py).
+Purpose:
+- Show a very basic Coco application skeleton opening a window.
+- Show how to integrate ImGUI with cocos to make settings to the application dynamically.
+
+Source: [example1_imgui.py](./example1/example1_imgui.py).
 
 More on ImGui for Python: https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html
 
@@ -83,17 +91,14 @@ The example is based upon this code: https://github.com/pyimgui/pyimgui/blob/mas
 
 with a fix to the broken ImGui base class.
 
-Purpose, to:
-- Show a very basic Coco application skeleton opening a window.
-- Show how to integrate ImGUI with cocos to make settings to the application dynamically.
-
 ![](img/example1.png)
 
 ### Example 2: Coco Sprites
 
-This example is based on: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
+Purpose:
+- Show how perform the fundamental operations of any 2D-game: working with sprites.
 
-It shows of a host of useful sprite transformation routines useful for game developers.
+This example is based on: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
 
 The same [repository](https://github.com/los-cocos/cocos/blob/master/samples/) contains a number of other useful examples
 that you could check out.
@@ -108,6 +113,7 @@ This example is based on this one: http://los-cocos.github.io/cocos-site/doc/pro
 It shows how to work with mouse move and click events.
 
 ![](img/example3.png)
+
 
 ### Example 4: Networking; Sending messages to a TCP server
 
@@ -128,6 +134,7 @@ to the server. It also echoes them back to the client, but no client reception c
 is yet implemented, that is coming up in the next example.
 
 ![](img/example4.png)
+
 
 ### Example 5: TODO: Networking and threaded server: Full duplex communication
 
@@ -164,9 +171,8 @@ employ one thread for each shard. We may do that in a later example.
 This will suffice for this example. We will build on this base plate to improve the design
 by publishing game events around both the client and the server.
 
-
-
 Ideas from: https://dzone.com/articles/understanding
+
 
 ### Example X: Separating content and engine.
 
