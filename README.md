@@ -1,148 +1,60 @@
-# Python Game Developers starting point
+# Game Developers Examples
 Last tested and working: January 2023.
 
-Zero to hero suit of examples for the aspiring Python Game Developer. Seem to work well on
-Python 3.10, all installed and contained in a virtual environment. Server components (when needed) 
-are started using docker-compose.
+This repository contains a set of code examples that I set up while learning game development.
 
-The intention of this repository is mostly educational and to provide a skeleton for further 
-development. It provides a well-defined starting point with developer setup instructions to get things going.
-
-I [browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
-and decided to first go for **cocos2d** as it seemed to be the best maintained and documented as of 2023.
-
-Cocos-2D builds on **Pyglet** and the latest release (v0.6.9) was made in November 2020.
-
-Main home page for Cocos-2D: http://los-cocos.github.io/cocos-site/, also see the [PyPi site](https://pypi.org/project/cocos2d/).
-
-Coupled with the **ImGUI** library, it seems to be what I needed for now, and integration with that is
-showed as a first example.
-
-So for now focus will go to showing how to use that. At a later point I may show similar examples
-for another framework. Runner ups, in order would be:
-
-- Python Arcade: https://api.arcade.academy/en/latest/ looks well maintained.
-- Ren'py for storytelling kind of games: https://www.renpy.org/
-- Pandas3D.
-- Possibly Pygame.
-
-I quickly evaluated **Ogre** which seemes like a very capable C++ framework for graphics, but lacked 
-in examples and documentation for Python especially for the later versions (2023). Pygame seemed
-all-over a bit dated and not very actively maintained.
+Starting with Python for fun and easy programing moving towards high-performance game-server
+using Go and Node.js interacting with Unity and possibly Unreal.
 
 ## Useful links for the game developer
 
-https://gameprogrammingpatterns.com/
+Patterns in general: https://gameprogrammingpatterns.com/
 
-## Dev setup
+The examples will not build upon the ECS pattern, but this is recommended for for more complex
+designs. Worth to keep in mind when/if we see flaws in a simpler design:
 
-### MAC
-I recommend installing pyenv using brew (Homebrew).
-
-    brew install pyenv
-
-### Ubuntu
-Like so:
-
-    apt install pyenv
-
-### Common
-Set up a new virtual environment called 'pyg' using pyenv
- 
-    pyenv install 3.10
-    pyenv virtualenv 3.10 pyg
-    pyenv activate pyg
-
-Install requirements needed for the examples
-
-    pip install -r requirements.txt
-
-And to run the first example:
-
-    python ./cocos2d_examples/example1/example1_imgui.py
-
-I use Pycharm for development, but any IDE or editor of choice will do.
-
-## Cocos-2D Examples
-
-Cocos-2D, API-Ref: http://los-cocos.github.io/cocos-site/doc/index.html
-
-### Example 0: Hello World!
-
-Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
-
-This one is simply the hello-world example found in the quickstart:
-
-http://los-cocos.github.io/cocos-site/doc/programming_guide/quickstart.html
-
-![](img/example0.png)
-
-### Example 1: Coco and ImGUI
-
-Source: [example1_imgui.py](cocos2d_examples/example1/example1_imgui.py).
-
-More on ImGui for Python: https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html
-
-The example is based upon this code: https://github.com/pyimgui/pyimgui/blob/master/doc/examples/integrations_cocos2d.py
-
-with a fix to the broken ImGui base class.
-
-Purpose, to:
-- Show a very basic Coco application skeleton opening a window.
-- Show how to integrate ImGUI with cocos to make settings to the application dynamically.
-
-![](img/example1.png)
-
-### Example 2: Coco Sprites
-
-This example is based on: https://github.com/los-cocos/cocos/blob/master/samples/demo_sprites.py
-
-It shows of a host of useful sprite transformation routines useful for game developers.
-
-The same [repository](https://github.com/los-cocos/cocos/blob/master/samples/) contains a number of other useful examples
-that you could check out.
-
-![](img/example2.png)
+ECS architectural pattern: https://en.wikipedia.org/wiki/Entity_component_system
 
 
-### Example 3: Mouse events
+## 1. Python
+Since my main programming language at the time of writing this was Python I decided to see what
+it had to offer even though Pyton is not the language of choice for most professionals. 
 
-This example is based on this one: http://los-cocos.github.io/cocos-site/doc/programming_guide/quickstart.html#handling-events
+The set of examples and documentation could still very well be used do develop simpler (or even
+complex) games for educational purposes.
 
-It shows how to work with mouse move and click events.
+The Python-based examples can be found [here](./python-cocos2d/README.md).
 
-![](img/example3.png)
+Typical use-cases, but not limited to:
 
-### Example 4: Networking; Sending messages to a TCP server
-
-This is Example 3 with the addition of sending the mouse-coordinates to a server that echoes
-the coordinates to its console.
-
-This example also showcases how to use Msgpack (https://msgpack.org/) and a simple TCP socket
-client and server.
-
-Additions are loosely based on: 
-- https://www.techwithtim.net/tutorials/python-online-game-tutorial/server/
-- https://www.techwithtim.net/tutorials/python-online-game-tutorial/sending-receiving-information/
-
-Will build on this example over next couple of examples.
-
-As seen in screenshot, moving the mouse over the window will transfer the coordinates
-to the server. It also echoes them back to the client, but no client reception code
-is yet implemented, that is coming up in the next example.
-
-![](img/example4.png)
-
-### Example 5: Networking: Updating the game client from server
-Here we build on the last example, adding a threaded receiver, putting messages
-on a Queue for processing/dispatching to the game client.
-
-Ideas from:
-- https://dzone.com/articles/understanding
-
-### Example X: Separating content and engine.
+- Fun Python development, events, graphics, 2D etc.
+- Educational for game (client) development.
+- Cocos 2D development in general.
 
 
-### Example X: The structure of a simple game
+## 2. Python client, Go server
+This a smaller set of examples, building on the basic Python examples above but working
+against a simple but custom made [Go](https://go.dev/) server-side. This part contains only one
+or a few examples for experimental purposes. I may expand this once my Go skills improves.
 
-...
+The Python-Go examples
+
+Use-cases:
+
+- Go server development in general.
+- Scalability, multiprocessing.
+- Server coding pattern experiments.
+- Reducing latency etc.
+
+
+## 3. Unity client, Go server
+This part represents a more professional starting point. The examples here build on an existing
+Go-based game backend called [GoWorld](https://github.com/xiaonanln/goworld) and its Unity examples 
+as well as looking to other existing open-source game-server solutions, such as the node.js-based
+[Pomelo](https://github.com/NetEase/pomelo) engine, that contains a host of useful information regarding
+design choices made.
+
+Use-cases:
+- Learning professional large scale game server architecture.
+- Interaction with networking Unity-based games.
+- Deployment and Ops aspects of game servers.
