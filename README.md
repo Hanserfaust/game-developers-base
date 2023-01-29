@@ -1,4 +1,4 @@
-# Game Developers Examples
+# Game Developers Base
 Last tested and working: January 2023.
 
 This repository contains a set of code examples that I set up while learning game development.
@@ -17,17 +17,18 @@ ECS architectural pattern: https://en.wikipedia.org/wiki/Entity_component_system
 
 
 ## 1. Python
+[Examples here](./python-cocos2d/README.md).
+
 Since my main programming language at the time of writing this was Python I decided to see what
 it had to offer even though Pyton is not the language of choice for most professionals. 
 
-The Cocos2D framework was both fun and easy to work with. So I set a few examples up using that.
+The Cocos2D framework is both fun and easy to work with. So I created a few examples using that.
 
 The set of examples and documentation could still be used to develop simpler (or even
 complex) games for educational purposes or hobby projects etc. Fun and simple, but capable enough
 for anyone wanting to dive into game development. Especially for experimenting with client-side
 patterns, program structure, testing etc.
 
-The Python-based examples can be found [here](./python-cocos2d/README.md).
 
 Typical use-cases, but not limited to:
 
@@ -41,7 +42,9 @@ built on pure sockets. So for server-side development I continued looking to Go-
 either building one from scratch or preferably looking at any of the available open-source
 frameworks.
 
-## 2. Python client, Go server
+## 2. Go server
+[Examples here](./go-server/README.md).
+
 This a smaller set of examples, building on the basic Python examples above but working
 against a simple but custom made [Go](https://go.dev/) server-side. This part contains only one
 or a few examples for experimental purposes. I may expand this once my Go skills improves.

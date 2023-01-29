@@ -138,7 +138,7 @@ is yet implemented, that is coming up in the next example.
 
 ### Example 5: TODO: Networking and threaded server: Full duplex communication
 
-** NOT yet completed and may never be. At this point I started looking at a Go-based game-server solution. **
+**NOT yet completed. At this point I started looking at a Go-based game-server solution.**
 
 The next feature we want is more complicated. We want to be able to send message in both directions
 from both the server and the client. The messages will trigger events on the server as well as
