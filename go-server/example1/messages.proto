@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package = "./";
+
+message HelloServer {
+    string message = 2;
+}
+
+message MouseMove {
+  int32 x = 1;
+  int32 y = 2;
+  bool left_click = 3;
+  bool right_click = 4;
+}

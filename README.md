@@ -64,6 +64,8 @@ Use-cases:
 
 
 ## 3. Unity client, Go server
+**[Coming]**
+
 This part represents a more professional starting point. The examples here build on an existing
 Go-based game backend called [GoWorld](https://github.com/xiaonanln/goworld) and its Unity examples 
 as well as looking to other existing open-source game-server solutions, such as the node.js-based

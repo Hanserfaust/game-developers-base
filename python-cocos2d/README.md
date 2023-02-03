@@ -11,7 +11,10 @@ development. It provides a well-defined starting point with developer setup inst
 I [browsed for the available game frameworks](https://geekflare.com/python-game-development-libraries-frameworks/) 
 and decided to first go for **cocos2d** as it seemed to be the best maintained and documented as of 2023.
 
-Cocos-2D builds on **Pyglet** and the latest release (v0.6.9) was made in November 2020.
+Cocos-2D builds on **Pyglet** and the latest version (v0.6.9) was released in November 2020. Note that
+there are [different forks of Cocos](https://en.wikipedia.org/wiki/Cocos2d) that are all based on 
+the initial open-source version made in Python in 208, some of which are commercial and very much a
+tool of professionals. So this is not a bad framework at all to get acquainted with.
 
 Main home page for Cocos-2D: http://los-cocos.github.io/cocos-site/, also see the [PyPi site](https://pypi.org/project/cocos2d/).
 
@@ -120,14 +123,12 @@ It shows how to work with mouse move and click events.
 This is Example 3 with the addition of sending the mouse-coordinates to a server that echoes
 the coordinates to its console.
 
-This example also showcases how to use Msgpack (https://msgpack.org/) and a simple TCP socket
-client and server.
+This example also makes a stab at Msgpack (https://msgpack.org/) for the wire-format to send 
+messages over a TCP socket to a very simple server process.
 
 Additions are loosely based on: 
 - https://www.techwithtim.net/tutorials/python-online-game-tutorial/server/
 - https://www.techwithtim.net/tutorials/python-online-game-tutorial/sending-receiving-information/
-
-Will build on this example over next couple of examples.
 
 As seen in screenshot, moving the mouse over the window will transfer the coordinates
 to the server. It also echoes them back to the client, but no client reception code
