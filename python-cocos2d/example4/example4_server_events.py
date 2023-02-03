@@ -1,6 +1,6 @@
 import cocos
 
-from client import MessageTCPClient
+from tcp_client import MessageTCPClient
 
 from messages import MouseMoveGameMessage, HelloServerGameMessage
 
