@@ -1,9 +1,12 @@
 syntax = "proto3";
 
+package messages;
+
 option go_package = "./";
 
-message HelloServer {
-    string message = 2;
+message PlayerLogin {
+    string username = 1;
+    string password = 2;
 }
 
 message MouseMove {
