@@ -1,5 +1,7 @@
 import unittest
-import messages
+
+from messaging import messages
+from packet import get_type_id
 
 
 class TestPBMessages(unittest.TestCase):
@@ -14,7 +16,7 @@ class TestPBMessages(unittest.TestCase):
 
     def test_should_serialize_mouse_message(self):
 
-        mouse_move = messages.MouseMove(x=1, y=1)
+        mouse_move = messages.MouseEvent(x=1, y=1)
 
         data = bytes(mouse_move)
 
@@ -23,7 +25,7 @@ class TestPBMessages(unittest.TestCase):
         self.assertEqual(b'\x08\x01\x10\x01', data)
 
     def test_should_prefix_length_to_mouse_message(self):
-        mouse_move = messages.MouseMove(x=1, y=1)
+        mouse_move = messages.MouseEvent(x=1, y=1)
 
         data = bytes(mouse_move)
         lb = bytes([len(data)])
@@ -32,3 +34,13 @@ class TestPBMessages(unittest.TestCase):
         # A packet is the data prefixed with the data_len (which is 4):
         self.assertEqual(b'\x04\x08\x01\x10\x01', bytes(packet))
 
+
+class TestPacket(unittest.TestCase):
+
+    def test_should_get_correct_type_ids(self):
+
+        type_id = get_type_id(messages.PlayerLogin('a', 'b'))
+        self.assertEqual(messages.MType.PLAYER_LOGIN, type_id)
+
+        type_id = get_type_id(messages.MouseEvent(x=1, y=1))
+        self.assertEqual(messages.MType.MOUSE_MOVE, type_id)

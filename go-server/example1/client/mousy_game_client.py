@@ -1,7 +1,6 @@
 import cocos
 from pyglet.window.mouse import buttons_string
 
-from messaging.wrapper import wrap
 from messaging import messages
 from tcp_client import MessageTCPClient
 
@@ -33,8 +32,8 @@ class MouseDisplay(cocos.layer.Layer):
         """
         self.update_text(x, y)
 
-        mouse_move_message = messages.MouseMove(x, y)
-        MessageTCPClient.send(bytes(mouse_move_message))
+        mouse_move_message = messages.MouseEvent(x, y)
+        MessageTCPClient.send(mouse_move_message)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         """Called when the mouse moves over the app window with some button(s) pressed
@@ -63,7 +62,7 @@ class MouseDisplay(cocos.layer.Layer):
         left_click = 'LEFT' in bs
         right_click = 'RIGHT' in bs
 
-        mouse_move_message = messages.MouseMove(x, y, left_click, right_click)
+        mouse_move_message = messages.MouseEvent(x, y, left_click, right_click)
         MessageTCPClient.send(mouse_move_message)
 
 

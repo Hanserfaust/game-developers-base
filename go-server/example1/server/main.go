@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
 	"io"
 	"log"
-	"messages.pb"
 	"net"
 	"os"
 )
@@ -22,7 +22,7 @@ func main() {
 		log.Fatal(err)
 		os.Exit(1)
 	}
-	fmt.Printf("Server up on %v:%v", HOST, PORT)
+	fmt.Println("Server up on", HOST, ":", PORT)
 
 	// close listener
 	defer listen.Close()
@@ -44,17 +44,29 @@ type GameMessage struct {
 
 func handleRequest(conn net.Conn) {
 	// incoming request
+	n := 0
 	for {
-		buf_len := make([]byte, 1)
-		message_data := make([]byte, 256)
+		header := make([]byte, 2)
 
-		_, err := io.ReadAtLeast(conn, message_data, int(buf_len[0]))
+		// First read the two byte header
+		_, err := io.ReadAtLeast(conn, header, 2)
 
 		if err != nil {
 			log.Fatal(err)
 		}
-		var game_message = decodeBuffer(buffer)
-		fmt.Println(game_message.name)
+
+		message_size := header[0]
+		message_type := header[1]
+
+		message_data := make([]byte, message_size)
+
+		// And read the packet
+		_, err = io.ReadFull(conn, message_data)
+
+		fmt.Printf("%d\n", n)
+		n++
+		printReceivedBuffer(message_data, message_type)
+		// fmt.Println(game_message.name)
 	}
 
 	// write data to response
@@ -66,8 +78,9 @@ func handleRequest(conn net.Conn) {
 	// conn.Close()
 }
 
-func decodeBuffer(buffer []byte) {
-	print(buffer)
-	// return game_message
+func printReceivedBuffer(buffer []byte, message_type byte) {
+	fmt.Printf("Got message of type 0x%x:", message_type)
 
+	encodedStr := hex.EncodeToString(buffer)
+	fmt.Printf("%s\n", encodedStr)
 }

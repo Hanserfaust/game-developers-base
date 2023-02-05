@@ -2,7 +2,7 @@ import random
 import socket
 
 # TODO: Find better solution to this, works for now
-from messaging.helper import build_packet
+from packet import build_packet
 
 
 class MessageTCPClient(object):

@@ -1,4 +1,4 @@
-import messages
+from messaging import messages
 
 
 def get_type_id(game_message):
@@ -7,11 +7,11 @@ def get_type_id(game_message):
         case messages.PlayerLogin:
             return messages.MType.PLAYER_LOGIN
 
-        case messages.MouseMove:
+        case messages.MouseEvent:
             return messages.MType.MOUSE_MOVE
 
         case _:
-            raise Exception("Unsupported message type!")
+            raise Exception("Unsupported message type: %s" % type(game_message))
 
 
 def build_packet(game_message):
@@ -26,5 +26,5 @@ def build_packet(game_message):
     """
     gm_id = get_type_id(game_message)
     msg_bytes = bytes(game_message)
-    header = bytes([gm_id, len(msg_bytes)])
-    return header + game_message
+    header = bytes([len(msg_bytes), gm_id])
+    return header + msg_bytes

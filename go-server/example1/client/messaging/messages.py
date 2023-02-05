@@ -19,7 +19,7 @@ class PlayerLogin(betterproto.Message):
 
 
 @dataclass
-class MouseMove(betterproto.Message):
+class MouseEvent(betterproto.Message):
     x: int = betterproto.int32_field(1)
     y: int = betterproto.int32_field(2)
     left_click: bool = betterproto.bool_field(3)
