@@ -15,9 +15,22 @@ const (
 	TYPE = "tcp"
 )
 
-func handleRequest(conn net.Conn) {
-	// incoming request
-	n := 0
+func handleConnection(conn net.Conn) {
+	/**
+	Outer routine called after the Socket Accept.
+
+	This one must register the connection somehow
+	on a central place since other routines will need
+	to send messages to the Player.
+
+	This routine:
+		- expect a PlayerLogin.
+		- check the credentials.
+		- send back PlayerLoginSuccess or PlayerLoginFailed
+		- if Failed: clean up and close the connection.
+		- if Success: register the player on the World.
+	*/
+
 	for {
 		// Allocate header
 		header := make([]byte, 2)
@@ -29,21 +42,31 @@ func handleRequest(conn net.Conn) {
 			log.Fatal(err)
 		}
 
-		message_size := header[0]
-		message_type := header[1]
+		messageSize := header[0]
+		messageType := int(header[1])
 
 		// Allocate for packet
-		message_data := make([]byte, message_size)
+		messageData := make([]byte, messageSize)
 
 		// And read the packet
-		_, err = io.ReadFull(conn, message_data)
+		_, err = io.ReadFull(conn, messageData)
 
-		fmt.Printf("%d: ", n)
-		n++
-		printReceivedBuffer(message_data, message_type)
+		// printReceivedBuffer(messageData, messageType)
 
 		// Unmarshal binary data into Protocol Buffer gamepacket
+		gameMessage := packetToGameMessage(messageData, messageType)
 
+		if messageType == int(MType_PLAYER_LOGIN) {
+			playerLogin := gameMessage.(PlayerLogin)
+
+			// TODO: Check credentials
+
+			fmt.Println("Logged in: ", playerLogin.Username)
+
+		} else {
+			fmt.Println("!!! EVENT FROM NON LOGGED IN CONNECTION !!!")
+			// conn.Close()
+		}
 		// fmt.Println(game_message.name)
 	}
 
@@ -56,14 +79,14 @@ func handleRequest(conn net.Conn) {
 	// conn.Close()
 }
 
-func printReceivedBuffer(buffer []byte, message_type byte) {
-	fmt.Printf("Got message of type 0x%x:", message_type)
+func printReceivedBuffer(buffer []byte, messageType int) {
+	fmt.Printf("Got message of type 0x%x:", messageType)
 
 	encodedStr := hex.EncodeToString(buffer)
 	fmt.Printf("%s\n", encodedStr)
 }
 
-func toGameMessage(buffer []byte, message_type byte) {
+func toGameMessage(buffer []byte, messageType byte) {
 }
 
 func Start() {
@@ -81,8 +104,9 @@ func Start() {
 		conn, err := listen.Accept()
 		if err != nil {
 			log.Fatal(err)
-			os.Exit(1)
+			// os.Exit(1)
 		}
-		go handleRequest(conn)
+
+		go handleConnection(conn)
 	}
 }

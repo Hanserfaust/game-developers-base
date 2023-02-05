@@ -9,7 +9,7 @@ import betterproto
 class MType(betterproto.Enum):
     UNKNOWN = 0
     PLAYER_LOGIN = 1
-    MOUSE_MOVE = 2
+    MOUSE_EVENT = 2
 
 
 @dataclass

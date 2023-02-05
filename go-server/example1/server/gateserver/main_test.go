@@ -12,7 +12,7 @@ import (
 func TestProtocolBuffers(t *testing.T) {
 	playerLogin := PlayerLogin{
 		Username: "Tester",
-		Password: "foobar",
+		Password: "s33cret!",
 	}
 	out, err := proto.Marshal(&playerLogin)
 
@@ -20,5 +20,11 @@ func TestProtocolBuffers(t *testing.T) {
 		log.Fatalln("Failed to Marshal PlayerLogin object:", err)
 	}
 	encodedStr := hex.EncodeToString(out)
-	fmt.Printf("Encoded to: %s\n", encodedStr)
+	fmt.Println("Encoded to: ", encodedStr)
+
+	playerLoginCopy := PlayerLogin{}
+	err = proto.Unmarshal(out, &playerLoginCopy)
+
+	fmt.Println("Username: ", playerLoginCopy.Username)
+	fmt.Println("Password: ", playerLoginCopy.Password)
 }

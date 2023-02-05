@@ -7,7 +7,7 @@ option go_package = "./gateserver";
 enum MType {
     UNKNOWN = 0;
     PLAYER_LOGIN = 1;
-    MOUSE_MOVE = 2;
+    MOUSE_EVENT = 2;
 }
 
 message PlayerLogin {

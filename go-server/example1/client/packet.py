@@ -8,7 +8,7 @@ def get_type_id(game_message):
             return messages.MType.PLAYER_LOGIN
 
         case messages.MouseEvent:
-            return messages.MType.MOUSE_MOVE
+            return messages.MType.MOUSE_EVENT
 
         case _:
             raise Exception("Unsupported message type: %s" % type(game_message))
