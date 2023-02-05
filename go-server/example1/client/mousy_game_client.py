@@ -1,6 +1,8 @@
 import cocos
-import messages
+from pyglet.window.mouse import buttons_string
 
+from messaging.wrapper import wrap
+from messaging import messages
 from tcp_client import MessageTCPClient
 
 
@@ -31,7 +33,7 @@ class MouseDisplay(cocos.layer.Layer):
         """
         self.update_text(x, y)
 
-        mouse_move_message = messages.MouseMove(x, y, left_click=False, right_click=False)
+        mouse_move_message = messages.MouseMove(x, y)
         MessageTCPClient.send(bytes(mouse_move_message))
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
@@ -57,6 +59,13 @@ class MouseDisplay(cocos.layer.Layer):
         self.posx, self.posy = cocos.director.director.get_virtual_coordinates(x, y)
         self.update_text(x, y)
 
+        bs = buttons_string(buttons)
+        left_click = 'LEFT' in bs
+        right_click = 'RIGHT' in bs
+
+        mouse_move_message = messages.MouseMove(x, y, left_click, right_click)
+        MessageTCPClient.send(mouse_move_message)
+
 
 def main():
 
@@ -64,7 +73,7 @@ def main():
     gc = MessageTCPClient.get_instance(debug=True)
     gc.connect()
 
-    gc.send(HelloServerGameMessage("Hello"))
+    gc.send(messages.PlayerLogin("player", "s3cret"))
 
     # Init director
     cocos.director.director.init()

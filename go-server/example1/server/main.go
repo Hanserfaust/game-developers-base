@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
+	"messages.pb"
 	"net"
 	"os"
 )
@@ -43,8 +45,11 @@ type GameMessage struct {
 func handleRequest(conn net.Conn) {
 	// incoming request
 	for {
-		buffer := make([]byte, 1024)
-		_, err := conn.Read(buffer)
+		buf_len := make([]byte, 1)
+		message_data := make([]byte, 256)
+
+		_, err := io.ReadAtLeast(conn, message_data, int(buf_len[0]))
+
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -20,6 +20,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type MType int32
+
+const (
+	MType_UNKNOWN      MType = 0
+	MType_PLAYER_LOGIN MType = 1
+	MType_MOUSE_MOVE   MType = 2
+)
+
+// Enum value maps for MType.
+var (
+	MType_name = map[int32]string{
+		0: "UNKNOWN",
+		1: "PLAYER_LOGIN",
+		2: "MOUSE_MOVE",
+	}
+	MType_value = map[string]int32{
+		"UNKNOWN":      0,
+		"PLAYER_LOGIN": 1,
+		"MOUSE_MOVE":   2,
+	}
+)
+
+func (x MType) Enum() *MType {
+	p := new(MType)
+	*p = x
+	return p
+}
+
+func (x MType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (MType) Descriptor() protoreflect.EnumDescriptor {
+	return file_messages_proto_enumTypes[0].Descriptor()
+}
+
+func (MType) Type() protoreflect.EnumType {
+	return &file_messages_proto_enumTypes[0]
+}
+
+func (x MType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use MType.Descriptor instead.
+func (MType) EnumDescriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{0}
+}
+
 type PlayerLogin struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -161,8 +210,11 @@ var file_messages_proto_rawDesc = []byte{
 	0x66, 0x74, 0x5f, 0x63, 0x6c, 0x69, 0x63, 0x6b, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09,
 	0x6c, 0x65, 0x66, 0x74, 0x43, 0x6c, 0x69, 0x63, 0x6b, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x69, 0x67,
 	0x68, 0x74, 0x5f, 0x63, 0x6c, 0x69, 0x63, 0x6b, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a,
-	0x72, 0x69, 0x67, 0x68, 0x74, 0x43, 0x6c, 0x69, 0x63, 0x6b, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x69, 0x67, 0x68, 0x74, 0x43, 0x6c, 0x69, 0x63, 0x6b, 0x2a, 0x36, 0x0a, 0x05, 0x4d, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x0b, 0x0a, 0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00,
+	0x12, 0x10, 0x0a, 0x0c, 0x50, 0x4c, 0x41, 0x59, 0x45, 0x52, 0x5f, 0x4c, 0x4f, 0x47, 0x49, 0x4e,
+	0x10, 0x01, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x4f, 0x55, 0x53, 0x45, 0x5f, 0x4d, 0x4f, 0x56, 0x45,
+	0x10, 0x02, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -177,10 +229,12 @@ func file_messages_proto_rawDescGZIP() []byte {
 	return file_messages_proto_rawDescData
 }
 
+var file_messages_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_messages_proto_goTypes = []interface{}{
-	(*PlayerLogin)(nil), // 0: messages.PlayerLogin
-	(*MouseMove)(nil),   // 1: messages.MouseMove
+	(MType)(0),          // 0: messages.MType
+	(*PlayerLogin)(nil), // 1: messages.PlayerLogin
+	(*MouseMove)(nil),   // 2: messages.MouseMove
 }
 var file_messages_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -226,13 +280,14 @@ func file_messages_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_messages_proto_rawDesc,
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_messages_proto_goTypes,
 		DependencyIndexes: file_messages_proto_depIdxs,
+		EnumInfos:         file_messages_proto_enumTypes,
 		MessageInfos:      file_messages_proto_msgTypes,
 	}.Build()
 	File_messages_proto = out.File

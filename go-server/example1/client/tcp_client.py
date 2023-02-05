@@ -1,12 +1,20 @@
 import random
 import socket
 
+# TODO: Find better solution to this, works for now
+from messaging.helper import build_packet
+
 
 class MessageTCPClient(object):
     """
         Singleton representing/abstracting interactions with the server.
 
         Will _NOT_ connect upon creation.
+
+        Does NOT assume/know of the specific message format. It just sends and receives
+        a string of bytes, optionally prefixing the send operation with the size of the
+        given buffer.
+
     """
 
     _instance = None
@@ -32,20 +40,32 @@ class MessageTCPClient(object):
     def connect(self):
         self.sock.connect(self.addr)
 
-    def _send(self, data):
+    def _send(self, packet):
         try:
             # is a high-level Python-only method that sends the entire buffer you pass or throws
             # an exception. It does that by calling socket.send until everything has been sent
             # or an error occurs.
-            self.sock.sendall(data)
+            self.sock.sendall(packet)
         except socket.error as e:
             print(e)
 
     @staticmethod
     def send(game_message):
-        # Quick access method for sending data to server
-        gc = MessageTCPClient.get_instance()
-        if gc.debug:
-            print("Sending %s" % game_message)
-        bin_packet = game_message.serialize(MessageTCPClient.id)
-        gc._send(bin_packet)
+        """
+        Give game message ask external module for the wire_packet to send.
+
+        ARCH: Possibly sub-optimal, not sure which way this dependency would go
+              or if a better way would be an interface "get_packege()" etc.
+
+              Best would be if the game_message was self-describing with a built-in message
+              ID, static for the type, but proto3 does not support default values.
+
+              Works for now.
+
+        :param game_message:
+        :return:
+        """
+
+        packet = build_packet(game_message)
+
+        MessageTCPClient.get_instance()._send(packet)

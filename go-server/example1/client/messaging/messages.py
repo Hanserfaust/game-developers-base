@@ -6,6 +6,12 @@ from dataclasses import dataclass
 import betterproto
 
 
+class MType(betterproto.Enum):
+    UNKNOWN = 0
+    PLAYER_LOGIN = 1
+    MOUSE_MOVE = 2
+
+
 @dataclass
 class PlayerLogin(betterproto.Message):
     username: str = betterproto.string_field(1)
