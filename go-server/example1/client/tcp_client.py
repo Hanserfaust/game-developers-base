@@ -52,15 +52,7 @@ class MessageTCPClient(object):
     @staticmethod
     def send(game_message):
         """
-        Give game message ask external module for the wire_packet to send.
-
-        ARCH: Possibly sub-optimal, not sure which way this dependency would go
-              or if a better way would be an interface "get_packege()" etc.
-
-              Best would be if the game_message was self-describing with a built-in message
-              ID, static for the type, but proto3 does not support default values.
-
-              Works for now.
+        Works for now, but not sure if this module/function should call into the packet module.
 
         :param game_message:
         :return:

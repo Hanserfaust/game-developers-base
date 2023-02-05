@@ -36,16 +36,11 @@ func main() {
 	}
 }
 
-type GameMessage struct {
-	name      string
-	client_id string
-	data      []int32
-}
-
 func handleRequest(conn net.Conn) {
 	// incoming request
 	n := 0
 	for {
+		// Allocate header
 		header := make([]byte, 2)
 
 		// First read the two byte header
@@ -58,14 +53,18 @@ func handleRequest(conn net.Conn) {
 		message_size := header[0]
 		message_type := header[1]
 
+		// Allocate for packet
 		message_data := make([]byte, message_size)
 
 		// And read the packet
 		_, err = io.ReadFull(conn, message_data)
 
-		fmt.Printf("%d\n", n)
+		fmt.Printf("%d: ", n)
 		n++
 		printReceivedBuffer(message_data, message_type)
+
+		// Unmarshal binary data into Protocol Buffer gamepacket
+
 		// fmt.Println(game_message.name)
 	}
 
@@ -83,4 +82,7 @@ func printReceivedBuffer(buffer []byte, message_type byte) {
 
 	encodedStr := hex.EncodeToString(buffer)
 	fmt.Printf("%s\n", encodedStr)
+}
+
+func toGameMessage(buffer []byte, message_type byte) {
 }

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messages;
 
-option go_package = "./";
+option go_package = "./main";
 
 enum MType {
     UNKNOWN = 0;
