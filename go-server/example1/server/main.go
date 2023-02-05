@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	gateserver.StartServer()
+	gateserver.Start()
 }

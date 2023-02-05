@@ -66,7 +66,7 @@ func printReceivedBuffer(buffer []byte, message_type byte) {
 func toGameMessage(buffer []byte, message_type byte) {
 }
 
-func StartServer() {
+func Start() {
 
 	listen, err := net.Listen(TYPE, HOST+":"+PORT)
 	if err != nil {
