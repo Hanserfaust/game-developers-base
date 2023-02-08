@@ -96,7 +96,7 @@ func receivePackagesFromConnection(conn net.Conn) {
 func sendPackagesToConnection(conn net.Conn) {
 
 	for {
-		time.Sleep(1 * time.Second)
+		time.Sleep(100 * time.Microsecond)
 
 		fmt.Println("Sending PING")
 

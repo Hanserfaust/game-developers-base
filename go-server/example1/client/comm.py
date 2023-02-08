@@ -59,27 +59,33 @@ def process_queue():
     #
     # Will block until an item arrives
     #
-    running = True
-    while running:
+    gc = tcp_client.MessageTCPClient.get_instance(debug=True)
+
+    while True:
         item = comm_queue.get()
 
         if item['direction'] == 'SERVER':
             packet = _build_packet(item['game_message'])
-            gc = tcp_client.MessageTCPClient.get_instance(debug=True)
             gc.send(packet)
         elif item['direction'] == 'CLIENT':
             # From server, coming here
             pass
 
 
-def socket_listener():
-    connect()
+def receive_packets():
+    gc = tcp_client.MessageTCPClient.get_instance(debug=True)
 
-    # Will block
-    process_queue()
+    while True:
+        gc.receive(comm_queue)
 
 
-def start_socket_thread():
-    the_socket_thread = threading.Thread(target=socket_listener)
-    the_socket_thread.start()
-    return the_socket_thread
+def start_message_queue_thread():
+    t = threading.Thread(target=process_queue)
+    t.start()
+    return t
+
+
+def start_receiver_thread():
+    t = threading.Thread(target=receive_packets)
+    t.start()
+    return t

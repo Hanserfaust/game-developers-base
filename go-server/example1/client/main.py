@@ -2,13 +2,18 @@ import cocos
 
 from layers import MouseDisplay
 
-from comm import send_to_server, start_socket_thread
+from comm import connect, send_to_server, start_message_queue_thread, start_receiver_thread
 from messages import PlayerLogin
 
 
 def main():
+
+    connect()
+
     # Start the background threads needed before c
-    socket_thread = start_socket_thread()
+    mq_thread = start_message_queue_thread()
+
+    rec_thread = start_receiver_thread()
 
     # Login
     send_to_server(PlayerLogin("player", "s3cret"))
@@ -23,7 +28,8 @@ def main():
     # And let the director run the scene
     cocos.director.director.run(main_scene)
 
-    socket_thread.join()
+    mq_thread.join()
+    rec_thread.join()
 
 
 if __name__ == "__main__":

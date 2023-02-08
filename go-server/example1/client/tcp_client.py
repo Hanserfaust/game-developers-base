@@ -1,5 +1,6 @@
 import random
 import socket
+import threading
 
 
 class MessageTCPClient(object):
@@ -27,6 +28,7 @@ class MessageTCPClient(object):
 
         # SOCK_STREAM means TCP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock_lock = threading.RLock()
 
     @staticmethod
     def get_instance(**kwargs):
@@ -38,21 +40,25 @@ class MessageTCPClient(object):
         self.sock.connect(self.addr)
 
     def send(self, packet):
-        try:
-            # is a high-level Python-only method that sends the entire buffer you pass or throws
-            # an exception. It does that by calling socket.send until everything has been sent
-            # or an error occurs.
-            self.sock.sendall(packet)
-        except socket.error as e:
-            print(e)
+        with self.sock_lock:
+            try:
+                self.sock.sendall(packet)
+            except socket.error as e:
+                print(e)
 
-    def receive(self):
-        rest_size = self.sock.recv(1)
-        rest_size = int(rest_size[0])
-        type_and_message = self.sock.recv(rest_size)
-        message_type = type_and_message[0]
-        message = type_and_message[1:]
+    def receive(self, queue):
+        size_byte = self.sock.recv(1)
+        packet_size = int.from_bytes(size_byte, "big")
 
-        print("Received packet of type: %s, len: %s" % (message_type, len(message)))
+        type_byte = self.sock.recv(1)
+        message_type = int.from_bytes(type_byte, "big")
 
-        return message_type, message
+        game_message = self.sock.recv(int(packet_size))
+
+        print("Received packet of type: %s, len: %s" % (message_type, packet_size))
+
+        item = {
+            'direction': 'CLIENT',
+            'game_message': game_message
+        }
+        queue.put(item)
