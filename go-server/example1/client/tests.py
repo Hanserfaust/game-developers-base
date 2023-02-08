@@ -1,7 +1,7 @@
 import unittest
 
-from messaging import messages
-from packet import get_type_id
+from comm import get_type_id
+import messages
 
 
 class TestPBMessages(unittest.TestCase):
@@ -43,4 +43,4 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(messages.MType.PLAYER_LOGIN, type_id)
 
         type_id = get_type_id(messages.MouseEvent(x=1, y=1))
-        self.assertEqual(messages.MType.MOUSE_MOVE, type_id)
+        self.assertEqual(messages.MType.MOUSE_EVENT, type_id)

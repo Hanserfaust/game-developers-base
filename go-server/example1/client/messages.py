@@ -10,6 +10,7 @@ class MType(betterproto.Enum):
     UNKNOWN = 0
     PLAYER_LOGIN = 1
     MOUSE_EVENT = 2
+    PING_EVENT = 3
 
 
 @dataclass
@@ -24,3 +25,10 @@ class MouseEvent(betterproto.Message):
     y: int = betterproto.int32_field(2)
     left_click: bool = betterproto.bool_field(3)
     right_click: bool = betterproto.bool_field(4)
+
+
+@dataclass
+class Ping(betterproto.Message):
+    sent_epoch: int = betterproto.uint64_field(1)
+    bounce_epoch: int = betterproto.uint64_field(2)
+    received_epoch: int = betterproto.uint64_field(3)

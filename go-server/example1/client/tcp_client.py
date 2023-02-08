@@ -1,9 +1,6 @@
 import random
 import socket
 
-# TODO: Find better solution to this, works for now
-from packet import build_packet
-
 
 class MessageTCPClient(object):
     """
@@ -40,7 +37,7 @@ class MessageTCPClient(object):
     def connect(self):
         self.sock.connect(self.addr)
 
-    def _send(self, packet):
+    def send(self, packet):
         try:
             # is a high-level Python-only method that sends the entire buffer you pass or throws
             # an exception. It does that by calling socket.send until everything has been sent
@@ -49,15 +46,13 @@ class MessageTCPClient(object):
         except socket.error as e:
             print(e)
 
-    @staticmethod
-    def send(game_message):
-        """
-        Works for now, but not sure if this module/function should call into the packet module.
+    def receive(self):
+        rest_size = self.sock.recv(1)
+        rest_size = int(rest_size[0])
+        type_and_message = self.sock.recv(rest_size)
+        message_type = type_and_message[0]
+        message = type_and_message[1:]
 
-        :param game_message:
-        :return:
-        """
+        print("Received packet of type: %s, len: %s" % (message_type, len(message)))
 
-        packet = build_packet(game_message)
-
-        MessageTCPClient.get_instance()._send(packet)
+        return message_type, message
