@@ -3,6 +3,7 @@ package gateserver
 import (
 	"fmt"
 	"google.golang.org/protobuf/proto"
+	"time"
 )
 
 func packetToGameMessage(buffer []byte, mType int) interface{} {
@@ -26,4 +27,22 @@ func packetToGameMessage(buffer []byte, mType int) interface{} {
 		}
 	}
 	return nil
+}
+
+// TODO, generalize and optimize as this is a crucial function
+func buildPingPacket() []byte {
+
+	ping := Ping{}
+	ping.SentEpoch = uint64(time.Now().UnixMicro())
+
+	marshal, err := proto.Marshal(&ping)
+	if err != nil {
+		return nil
+	}
+	header := make([]byte, 2)
+	header[0] = byte(len(marshal))
+	header[1] = byte(MType_PING_EVENT)
+	packet := append(header, marshal...)
+
+	return packet
 }

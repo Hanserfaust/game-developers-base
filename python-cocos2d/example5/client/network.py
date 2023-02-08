@@ -41,11 +41,3 @@ class MessageTCPClient(object):
         except socket.error as e:
             print(e)
 
-    @staticmethod
-    def send(game_message):
-        # Quick access method for sending data to server
-        gc = MessageTCPClient.get_instance()
-        if gc.debug:
-            print("Sending %s" % game_message)
-        bin_packet = game_message.serialize(MessageTCPClient.id)
-        gc._send(bin_packet)

@@ -1,12 +1,12 @@
 package gateserver
 
 import (
-	"encoding/hex"
 	"fmt"
 	"io"
 	"log"
 	"net"
 	"os"
+	"time"
 )
 
 const (
@@ -17,20 +17,31 @@ const (
 
 func handleConnection(conn net.Conn) {
 	/**
-	Outer routine called after the Socket Accept.
+	Handles a connection from a Client.
 
-	This one must register the connection somehow
-	on a central place since other routines will need
-	to send messages to the Player.
+	the receiver will move incoming data to the next place
 
-	This routine:
-		- expect a PlayerLogin.
-		- check the credentials.
-		- send back PlayerLoginSuccess or PlayerLoginFailed
-		- if Failed: clean up and close the connection.
-		- if Success: register the player on the World.
+	the sender will accept packages from other parts of the backend
+	and send it to the client
+
 	*/
 
+	// Main packet receiver
+	go receivePackagesFromConnection(conn)
+
+	// Main packet sender
+	go sendPackagesToConnection(conn)
+}
+
+func receivePackagesFromConnection(conn net.Conn) {
+	/**
+	This routine:
+	- expect a PlayerLogin.
+	- check the credentials.
+	- send back PlayerLoginSuccess or PlayerLoginFailed
+	- if Failed: clean up and close the connection.
+	- if Success: register the player on the World.
+	*/
 	for {
 		// Allocate header
 		header := make([]byte, 2)
@@ -56,15 +67,18 @@ func handleConnection(conn net.Conn) {
 		// Unmarshal binary data into Protocol Buffer gamepacket
 		gameMessage := packetToGameMessage(messageData, messageType)
 
+		// TODO: Move message to right input queue/goroutine based on type?
+
+		// For now
 		if messageType == int(MType_PLAYER_LOGIN) {
 			playerLogin := gameMessage.(PlayerLogin)
 
-			// TODO: Check credentials
+			// TODO: Check credentials etc.
 
 			fmt.Println("Logged in: ", playerLogin.Username)
 
 		} else {
-			fmt.Println("!!! EVENT FROM NON LOGGED IN CONNECTION !!!")
+			fmt.Println("Dropping event of type", messageType)
 			// conn.Close()
 		}
 		// fmt.Println(game_message.name)
@@ -79,14 +93,20 @@ func handleConnection(conn net.Conn) {
 	// conn.Close()
 }
 
-func printReceivedBuffer(buffer []byte, messageType int) {
-	fmt.Printf("Got message of type 0x%x:", messageType)
+func sendPackagesToConnection(conn net.Conn) {
 
-	encodedStr := hex.EncodeToString(buffer)
-	fmt.Printf("%s\n", encodedStr)
-}
+	for {
+		time.Sleep(1 * time.Second)
 
-func toGameMessage(buffer []byte, messageType byte) {
+		fmt.Println("Sending PING")
+
+		packet := buildPingPacket()
+
+		_, err := conn.Write(packet)
+		if err != nil {
+			return
+		}
+	}
 }
 
 func Start() {
@@ -99,7 +119,7 @@ func Start() {
 	fmt.Println("Server up on", HOST, ":", PORT)
 
 	// close listener
-	defer listen.Close()
+	// defer listen.Close()
 	for {
 		conn, err := listen.Accept()
 		if err != nil {
