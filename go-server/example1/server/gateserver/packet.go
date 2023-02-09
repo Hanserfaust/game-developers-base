@@ -1,14 +1,13 @@
 package gateserver
 
 import (
-	"fmt"
 	"google.golang.org/protobuf/proto"
 	"time"
 )
 
 func packetToGameMessage(buffer []byte, mType int) interface{} {
 
-	fmt.Println("Got Game Message of type: ", mType)
+	// fmt.Println("Got Game Message of type: ", mType)
 
 	switch mType {
 

@@ -5,7 +5,6 @@ import (
 	"io"
 	"log"
 	"net"
-	"os"
 	"time"
 )
 
@@ -31,6 +30,7 @@ func handleConnection(conn net.Conn) {
 
 	// Main packet sender
 	go sendPackagesToConnection(conn)
+
 }
 
 func receivePackagesFromConnection(conn net.Conn) {
@@ -50,7 +50,10 @@ func receivePackagesFromConnection(conn net.Conn) {
 		_, err := io.ReadAtLeast(conn, header, 2)
 
 		if err != nil {
-			log.Fatal(err)
+			// Broken connection, client ugly shutdown etc.
+			log.Print("Error reading from client connection:", err)
+			log.Print("Closing!", conn)
+			return
 		}
 
 		messageSize := header[0]
@@ -75,11 +78,10 @@ func receivePackagesFromConnection(conn net.Conn) {
 
 			// TODO: Check credentials etc.
 
-			fmt.Println("Logged in: ", playerLogin.Username)
+			log.Println("Logged in:", playerLogin.Username)
 
 		} else {
-			fmt.Println("Dropping event of type", messageType)
-			// conn.Close()
+			// fmt.Println("Dropping event of type", messageType)
 		}
 		// fmt.Println(game_message.name)
 	}
@@ -96,14 +98,13 @@ func receivePackagesFromConnection(conn net.Conn) {
 func sendPackagesToConnection(conn net.Conn) {
 
 	for {
-		time.Sleep(100 * time.Microsecond)
-
-		fmt.Println("Sending PING")
+		time.Sleep(1000 * time.Millisecond)
 
 		packet := buildPingPacket()
 
 		_, err := conn.Write(packet)
 		if err != nil {
+			log.Println("Error writing packet: ")
 			return
 		}
 	}
@@ -113,19 +114,20 @@ func Start() {
 
 	listen, err := net.Listen(TYPE, HOST+":"+PORT)
 	if err != nil {
+		// Note: call to Fatal will do os.Exit(1).
 		log.Fatal(err)
-		os.Exit(1)
 	}
 	fmt.Println("Server up on", HOST, ":", PORT)
 
 	// close listener
-	// defer listen.Close()
+	defer listen.Close()
 	for {
+		log.Println("Listening for client.")
 		conn, err := listen.Accept()
 		if err != nil {
-			log.Fatal(err)
-			// os.Exit(1)
+			log.Println("Failed to Accept():", err)
 		}
+		log.Println("Client connected from", conn.RemoteAddr())
 
 		go handleConnection(conn)
 	}
