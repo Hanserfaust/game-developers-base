@@ -5,5 +5,12 @@ import (
 )
 
 func main() {
-	gateserver.Start()
+	// Socket server
+	go gateserver.Start()
+
+	// TODO: start the game server
+	// go gameserver.Start()
+
+	// TODO: start the meta-services integration stuff
+	// go metaserver.Start()
 }

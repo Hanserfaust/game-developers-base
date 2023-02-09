@@ -51,7 +51,7 @@ func receivePackagesFromConnection(conn net.Conn) {
 
 		if err != nil {
 			// Broken connection, client ugly shutdown etc.
-			log.Print("Error reading from client connection:", err)
+			log.Print("Error reading from:", conn.RemoteAddr(), "reason was: ", err)
 			log.Print("Closing!", conn)
 			return
 		}
@@ -122,7 +122,7 @@ func Start() {
 	// close listener
 	defer listen.Close()
 	for {
-		log.Println("Listening for client.")
+		log.Println("Waiting for clients to connect...")
 		conn, err := listen.Accept()
 		if err != nil {
 			log.Println("Failed to Accept():", err)
