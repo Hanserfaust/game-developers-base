@@ -1,12 +1,11 @@
 package socketserver
 
 import (
-	"bitknife.se/control"
+	"bitknife.se/core"
 	"fmt"
 	"io"
 	"log"
 	"net"
-	"time"
 )
 
 const (
@@ -17,7 +16,7 @@ const (
 	STATIC_PASSWORD = "#S33CR3T!"
 )
 
-func handleConnection(conn net.Conn, tDC chan control.DispatcherMessage, fDC chan control.DispatcherMessage) {
+func handleConnection(conn net.Conn) {
 	/**
 	Handles a connection from a Client.
 
@@ -33,24 +32,39 @@ func handleConnection(conn net.Conn, tDC chan control.DispatcherMessage, fDC cha
 		conn.Close()
 		return
 	}
-	// Ok, Client is authenticated start routine to read packages from client
 
-	// Register the needed channels
-	setupChannels(playerLogin)
+	/**
+	Client is authenticated, now we need to connect the client
+	to the game. This is done using Channels that connects to
+	the Dispatcher (middle layer), which then in turn connects to
+	the game engine (upper layer).
+
+	This separates the socket layer from the game layer completely.
+	*/
+
+	// Create and register the needed channels on the dispatcher
+	fromClient, toClient := makeAndRegisterChannels(playerLogin)
 
 	// Main packet receiver
-	go receivePacketsRoutine(conn, playerLogin, tDC)
+	go receivePacketsRoutine(conn, playerLogin, fromClient)
 
 	// Main packet sender
-	go sendPackagesRoutine(conn)
+	go sendPackagesRoutine(conn, toClient)
 
 }
 
-func setupChannels(playerLogin *PlayerLogin) {
+func makeAndRegisterChannels(playerLogin *core.PlayerLogin) (chan core.DispatcherMessage, chan core.DispatcherMessage) {
+	fromClient := make(chan core.DispatcherMessage)
+	toClient := make(chan core.DispatcherMessage)
 
+	// And register channels on the Dispatcher
+	core.RegisterToClientChannel(playerLogin.Username, toClient)
+	core.RegisterFromClientChannel(playerLogin.Username, fromClient)
+
+	return fromClient, toClient
 }
 
-func receivePacketsRoutine(conn net.Conn, playerLogin *PlayerLogin, tDC chan control.DispatcherMessage) {
+func receivePacketsRoutine(conn net.Conn, playerLogin *core.PlayerLogin, fromClient chan core.DispatcherMessage) {
 	for {
 		messageType, messageData := receivePackageFromConnection(conn)
 
@@ -64,12 +78,12 @@ func receivePacketsRoutine(conn net.Conn, playerLogin *PlayerLogin, tDC chan con
 		}
 
 		// Ok got a valid message, pass that to the dispatcher
-		dm := control.DispatcherMessage{SourceID: playerLogin.Username, Type: messageType, Data: messageData}
-		tDC <- dm
+		dm := core.DispatcherMessage{SourceID: playerLogin.Username, Type: messageType, Data: messageData}
+		fromClient <- dm
 	}
 }
 
-func authenticateClient(conn net.Conn) *PlayerLogin {
+func authenticateClient(conn net.Conn) *core.PlayerLogin {
 	/**
 	Hard-coded login process. Will assume the correct order of packets
 	sent from the client. Will authorize the client etc.
@@ -78,7 +92,7 @@ func authenticateClient(conn net.Conn) *PlayerLogin {
 	package being sent is simple enough: If not, just disconnect.
 	*/
 	messageType, message := receivePackageFromConnection(conn)
-	if messageType == int(MType_PLAYER_LOGIN) {
+	if messageType == int(core.MType_PLAYER_LOGIN) {
 		playerLogin := bytesToPlayerLogin(messageType, message)
 
 		// TODO: Check vs player-registry etc.
@@ -125,25 +139,24 @@ func receivePackageFromConnection(conn net.Conn) (int, []byte) {
 	return messageType, messageData
 }
 
-func bytesToPlayerLogin(messageType int, messageData []byte) *PlayerLogin {
+func bytesToPlayerLogin(messageType int, messageData []byte) *core.PlayerLogin {
 	/**
-	This one is a bit odd. Should really not have "gameMessages" on this layer
+	This one is a bit odd. Should probably not have "gameMessages" on this layer
 	but this simplifies things a bit for now.
 
 	A solution would be to generalize the message concept into game messages
 	and all other kinds of messages supporting (ie login, logout, ping etc.)
 	*/
-	gameMessage := packetToGameMessage(messageData, messageType)
-	playerLogin := gameMessage.(PlayerLogin)
+	gameMessage := core.PacketToGameMessage(messageData, messageType)
+	playerLogin := gameMessage.(core.PlayerLogin)
 	return &playerLogin
 }
 
-func sendPackagesRoutine(conn net.Conn) {
-
+func sendPackagesRoutine(conn net.Conn, toClient chan core.DispatcherMessage) {
 	for {
-		time.Sleep(1000 * time.Millisecond)
+		dm := <-toClient
 
-		packet := buildPingPacket()
+		packet := dm.Data
 
 		_, err := conn.Write(packet)
 		if err != nil {
@@ -153,7 +166,7 @@ func sendPackagesRoutine(conn net.Conn) {
 	}
 }
 
-func Start(tDC chan control.DispatcherMessage, fDC chan control.DispatcherMessage) {
+func Start() {
 
 	listen, err := net.Listen(TYPE, HOST+":"+PORT)
 	if err != nil {
@@ -172,6 +185,6 @@ func Start(tDC chan control.DispatcherMessage, fDC chan control.DispatcherMessag
 		}
 		log.Println("Client connected from", conn.RemoteAddr())
 
-		go handleConnection(conn, tDC, fDC)
+		go handleConnection(conn)
 	}
 }

@@ -1,11 +1,11 @@
-package socketserver
+package core
 
 import (
 	"google.golang.org/protobuf/proto"
 	"time"
 )
 
-func packetToGameMessage(buffer []byte, mType int) interface{} {
+func PacketToGameMessage(buffer []byte, mType int) interface{} {
 
 	// fmt.Println("Got Game Message of type: ", mType)
 

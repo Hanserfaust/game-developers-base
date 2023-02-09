@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bitknife.se/control"
 	"bitknife.se/core"
 	"bitknife.se/socketserver"
 	"log"
@@ -12,22 +11,23 @@ import (
 
 func startServer() {
 
-	// Fancy console for the future
+	// Fancy console for the future!
 	// go StartConsole()
-	tDC := make(chan control.DispatcherMessage)
-	fDC := make(chan control.DispatcherMessage)
 
-	go control.MainDispatcher(tDC, fDC)
+	/**
+	Handles the TCP connections, moving messages through
+	the channels.
+	*/
+	go socketserver.Start()
 
-	// TODO: Move into dispatcher module?
-
-	go socketserver.Start(tDC, fDC)
-
+	/**
+	This is the main game logic core.
+	*/
 	go core.Start()
 
+	// TODO:
 	// Start REST APi etc.
-
-	// Start meta-services integration stuff,
+	// Start meta-services integration stuff (logging, metrics etc.)
 }
 
 func stopServer() {

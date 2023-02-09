@@ -1,6 +1,7 @@
 package socketserver
 
 import (
+	"bitknife.se/core"
 	"encoding/hex"
 	"fmt"
 	"log"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestProtocolBuffers(t *testing.T) {
-	playerLogin := PlayerLogin{
+	playerLogin := core.PlayerLogin{
 		Username: "Tester",
 		Password: "s33cret!",
 	}
@@ -22,7 +23,7 @@ func TestProtocolBuffers(t *testing.T) {
 	encodedStr := hex.EncodeToString(out)
 	fmt.Println("Encoded to: ", encodedStr)
 
-	playerLoginCopy := PlayerLogin{}
+	playerLoginCopy := core.PlayerLogin{}
 	err = proto.Unmarshal(out, &playerLoginCopy)
 
 	fmt.Println("Username: ", playerLoginCopy.Username)

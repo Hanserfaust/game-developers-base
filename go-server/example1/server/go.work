@@ -4,5 +4,4 @@ use (
 	.
 	./socketserver
 	./core
-	./control
 )
