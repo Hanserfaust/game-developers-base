@@ -1,4 +1,4 @@
-module bitknife.se/gateserver
+module bitknife.se/socketserver
 
 go 1.19
 

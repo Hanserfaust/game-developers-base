@@ -19,7 +19,7 @@ def main():
     rec_thread = start_receiver_thread()
 
     # Login
-    send_to_server(PlayerLogin("player", "s3cret"))
+    send_to_server(PlayerLogin("player", "#S33CR3T!"))
 
     # Init director
     cocos.director.director.init(resizable=True, width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT)

@@ -1,4 +1,4 @@
-package gateserver
+package socketserver
 
 import (
 	"google.golang.org/protobuf/proto"

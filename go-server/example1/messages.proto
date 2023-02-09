@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messages;
 
-option go_package = "./gateserver";
+option go_package = "./socketserver";
 
 enum MType {
     UNKNOWN = 0;
