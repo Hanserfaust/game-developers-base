@@ -5,6 +5,9 @@ from layers import MouseDisplay
 from comm import connect, send_to_server, start_message_queue_thread, start_receiver_thread
 from messages import PlayerLogin
 
+DEFAULT_WIDTH = 800
+DEFAULT_HEIGHT = 600
+
 
 def main():
 
@@ -19,7 +22,7 @@ def main():
     send_to_server(PlayerLogin("player", "s3cret"))
 
     # Init director
-    cocos.director.director.init()
+    cocos.director.director.init(resizable=True, width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT)
 
     mouse_display = MouseDisplay()
 
