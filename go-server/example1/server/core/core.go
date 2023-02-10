@@ -17,7 +17,7 @@ func clientPinger() {
 		// Prepare a common packet first
 		dm := DispatcherMessage{SourceID: "", Type: int(MType_PING_EVENT), Data: packetData}
 
-		usernames := GetUsernames()
+		usernames := GetConnectedUsernames()
 		for _, username := range usernames {
 			dm.SourceID = username
 			toClientDispatcher(dm)

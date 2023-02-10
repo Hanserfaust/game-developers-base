@@ -12,22 +12,15 @@ const (
 	HOST = "localhost"
 	PORT = "7777"
 	TYPE = "tcp"
-
-	STATIC_PASSWORD = "#S33CR3T!"
 )
 
 func handleConnection(conn net.Conn) {
+
 	/**
-	Handles a connection from a Client.
-
-	the receiver will move incoming data to the next place
-
-	the sender will accept packages from other parts of the backend
-	and send it to the client
-
+	First packet must be a login request.
 	*/
-
-	playerLogin := authenticateClient(conn)
+	messageType, message := receivePackageFromConnection(conn)
+	playerLogin := core.AuthenticateClient(messageType, message)
 	if playerLogin == nil {
 		conn.Close()
 		return
@@ -57,7 +50,7 @@ func makeAndRegisterChannels(playerLogin *core.PlayerLogin) (chan core.Dispatche
 	fromClient := make(chan core.DispatcherMessage)
 	toClient := make(chan core.DispatcherMessage)
 
-	// And register channels on the Dispatcher
+	// And register channels on the Dispatcher in the core layer
 	core.RegisterToClientChannel(playerLogin.Username, toClient)
 	core.RegisterFromClientChannel(playerLogin.Username, fromClient)
 
@@ -81,31 +74,6 @@ func receivePacketsRoutine(conn net.Conn, playerLogin *core.PlayerLogin, fromCli
 		dm := core.DispatcherMessage{SourceID: playerLogin.Username, Type: messageType, Data: messageData}
 		fromClient <- dm
 	}
-}
-
-func authenticateClient(conn net.Conn) *core.PlayerLogin {
-	/**
-	Hard-coded login process. Will assume the correct order of packets
-	sent from the client. Will authorize the client etc.
-
-	Just assuming the PlayerLogin is the first
-	package being sent is simple enough: If not, just disconnect.
-	*/
-	messageType, message := receivePackageFromConnection(conn)
-	if messageType == int(core.MType_PLAYER_LOGIN) {
-		playerLogin := bytesToPlayerLogin(messageType, message)
-
-		// TODO: Check vs player-registry etc.
-		if playerLogin.Password == STATIC_PASSWORD {
-			log.Println("Username:", playerLogin.Username, "authenticatd.")
-			return playerLogin
-		} else {
-			log.Println("ACCESS DENIED FOR Username:", playerLogin.Username, ": Invalid password.")
-		}
-	} else {
-		log.Println("ACCESS DENIED: Invalid message type", messageType, "when authenticating.")
-	}
-	return nil
 }
 
 func receivePackageFromConnection(conn net.Conn) (int, []byte) {
@@ -139,19 +107,6 @@ func receivePackageFromConnection(conn net.Conn) (int, []byte) {
 	return messageType, messageData
 }
 
-func bytesToPlayerLogin(messageType int, messageData []byte) *core.PlayerLogin {
-	/**
-	This one is a bit odd. Should probably not have "gameMessages" on this layer
-	but this simplifies things a bit for now.
-
-	A solution would be to generalize the message concept into game messages
-	and all other kinds of messages supporting (ie login, logout, ping etc.)
-	*/
-	gameMessage := core.PacketToGameMessage(messageData, messageType)
-	playerLogin := gameMessage.(core.PlayerLogin)
-	return &playerLogin
-}
-
 func sendPackagesRoutine(conn net.Conn, toClient chan core.DispatcherMessage) {
 	for {
 		dm := <-toClient
@@ -174,17 +129,19 @@ func Start() {
 		log.Fatal(err)
 	}
 	fmt.Println("Server up on", HOST, ":", PORT)
-
-	// close listener
 	defer listen.Close()
+
 	for {
-		log.Println("Waiting for clients to connect...")
+		/*
+			Accept() blocks
+		*/
+		log.Println("Waiting for next client to connect...")
 		conn, err := listen.Accept()
 		if err != nil {
 			log.Println("Failed to Accept():", err)
 		}
-		log.Println("Client connected from", conn.RemoteAddr())
 
+		log.Println("Client connected from", conn.RemoteAddr())
 		go handleConnection(conn)
 	}
 }

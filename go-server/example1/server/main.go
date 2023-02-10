@@ -16,12 +16,12 @@ func startServer() {
 
 	/**
 	Handles the TCP connections, moving messages through
-	the channels.
+	the channels and to/from each socket.
 	*/
 	go socketserver.Start()
 
 	/**
-	This is the main game logic core.
+	This is the layer separating sockets from the game.
 	*/
 	go core.Start()
 

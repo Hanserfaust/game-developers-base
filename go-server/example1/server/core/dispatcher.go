@@ -9,10 +9,19 @@ type DispatcherMessage struct {
 	Data     []byte
 }
 
+/**
+NOTE: The all mighty registry mapping a USERNAME to a CHANNEL
+
+TODO: Rethink if Username is a good key or not, it has its merits (ie if connection lost
+	  we could just re-attach the new connection and channel and move on). It would also
+	  naturally not allow multiple connections using the same Username (ie. disconnect old,
+	  or block the new).
+*/
+
 var ToClientChannels = make(map[string]chan DispatcherMessage)
 var FromClientChannels = make(map[string]chan DispatcherMessage)
 
-func GetUsernames() []string {
+func GetConnectedUsernames() []string {
 	return getAllKeysFromMap(ToClientChannels)
 }
 
