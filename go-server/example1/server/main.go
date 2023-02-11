@@ -2,6 +2,7 @@ package main
 
 import (
 	"bitknife.se/core"
+	"bitknife.se/game"
 	"bitknife.se/socketserver"
 	"log"
 	"os"
@@ -15,8 +16,13 @@ func startServer() {
 	// go StartConsole()
 
 	/**
-	Handles the TCP connections, moving messages through
-	the channels and to/from each socket.
+	Main serverside game loop
+	*/
+	go game.Start()
+
+	/**
+	  Handles the TCP connections, moving messages through
+	  the channels and to/from each socket.
 	*/
 	go socketserver.Start()
 
@@ -25,9 +31,6 @@ func startServer() {
 	*/
 	go core.Start()
 
-	// TODO:
-	// Start REST APi etc.
-	// Start meta-services integration stuff (logging, metrics etc.)
 }
 
 func stopServer() {

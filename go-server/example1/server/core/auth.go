@@ -5,27 +5,23 @@ import (
 )
 
 const (
-	STATIC_PASSWORD = "#S33CR3T!"
+	STATIC_PASSWORD = "welcome"
 )
 
 func AuthenticateClient(messageType int, message []byte) *PlayerLogin {
 	/**
-	Hard-coded login process. Will assume the correct order of packets
-	sent from the client. Will authorize the client etc.
-
-	Just assuming the PlayerLogin is the first
-	package being sent is simple enough: If not, just disconnect.
+	  Called from the socketserver layer during initial connection.
 	*/
 
 	if messageType == int(MType_PLAYER_LOGIN) {
 		playerLogin := bytesToPlayerLogin(messageType, message)
 
-		// TODO: Check vs player-registry etc.
+		// TODO: Check vs player-db etc.
 		if playerLogin.Password == STATIC_PASSWORD {
-			log.Println("Username:", playerLogin.Username, "authenticatd.")
+			log.Println("ACCESS GRANTED FOR Username:", playerLogin.Username)
 			return playerLogin
 		} else {
-			log.Println("ACCESS DENIED FOR Username:", playerLogin.Username, ": Invalid password.")
+			log.Println("ACCESS DENIED FOR Username:", playerLogin.Username, ": Invalid password:", playerLogin.Password)
 		}
 	} else {
 		log.Println("ACCESS DENIED: Invalid message type", messageType, "when authenticating.")
