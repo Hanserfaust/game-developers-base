@@ -13,8 +13,6 @@ It builds on Example 4) of the python-cocos2d example. This one adds a bunch to 
 - Showcasing Go routines for healthy separating different parts of the application.
 - Player authentication.
 
-https://medium.com/@hugovs/the-need-for-speed-experimenting-with-message-serialization-93d7562b16e4
-
 One difference between MessagePack (MP) and ProtoBuffers (PB) is that PB can generate "model stubs"
 for the supported languages, based on a **common schema**. Sometimes this is NOT what you want (and
 in that case I would recommend MessagePack), but in our case, this is exactly what want. 
@@ -30,13 +28,16 @@ Read more on Protocol Buffers here:
 
 https://protobuf.dev/
 
+For a new project, I would evaluate the promising library Cap'n Proto: https://capnproto.org/, developed
+by one of developers behind Protobuf 2.
+
 The server and client(s) can communicate with each other, but connections are not gracefully shut
 down in the example, so expect some broken pipes when shutting down the server early or killing
 the client abruptly etc. Left as an exercise to the reader to correct! :)
 
 ## Reading the code
 This README does not explain the entire architecture. I would advise any reader to follow the code
-from the [./server/main.go]() file.
+from the [./server/main.go](./server/main.go) file.
 
 ## Running the server and client
 Start the go server, for example lik this
