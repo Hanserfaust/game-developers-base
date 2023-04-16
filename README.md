@@ -8,7 +8,7 @@ using Go and Node.js interacting with Unity and possibly Unreal.
 
 ## Useful links for the game developer
 
-Patterns in general: https://gameprogrammingpatterns.com/
+Game programming Patterns: https://gameprogrammingpatterns.com/contents.html
 
 The examples will not build upon the ECS pattern, but this is recommended for for more complex
 designs. Worth to keep in mind when/if we see flaws in a simpler design:
